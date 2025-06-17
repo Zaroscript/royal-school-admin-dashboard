@@ -27,7 +27,7 @@ import {
   Mail,
   Phone,
   MapPin,
-  Calendar,
+  Calendar as CalendarIcon,
   BookOpen,
   Users,
   Filter,
@@ -39,7 +39,8 @@ import {
   CheckCircle2,
   Eye,
   Edit,
-  MinusCircle
+  MinusCircle,
+  Trash2
 } from 'lucide-react';
 
 interface Teacher {
@@ -258,7 +259,7 @@ const TeachersPage = () => {
                       تعديل البيانات
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Calendar className="w-4 h-4 mr-2" />
+                      <CalendarIcon className="w-4 h-4 mr-2" />
                       جدول الحصص
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
@@ -343,6 +344,11 @@ const TeachersPage = () => {
                     </ul>
                   </div>
                 )}
+
+                <div className="flex items-center text-sm text-gray-500">
+                  <CalendarIcon className="w-4 h-4 mr-2" />
+                  {teacher.joinDate}
+                </div>
               </div>
             </CardContent>
             <div className="mt-auto">
@@ -380,7 +386,7 @@ const TeachersPage = () => {
                 {/* Action Buttons */}
                 <div className="flex gap-2">
                   <Button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white" size="sm">
-                    <Calendar className="w-4 h-4 mr-2" />
+                    <CalendarIcon className="w-4 h-4 mr-2" />
                     عرض الجدول
                   </Button>
                   <Button variant="outline" size="sm" className="px-3">

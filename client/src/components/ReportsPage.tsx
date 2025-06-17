@@ -11,7 +11,7 @@ import {
   Users,
   FileText,
   Download,
-  Calendar,
+  Calendar as CalendarIcon,
   Filter
 } from 'lucide-react';
 

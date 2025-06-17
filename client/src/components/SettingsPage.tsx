@@ -24,7 +24,7 @@ import {
   Check,
   X,
   AlertCircle,
-  Calendar
+  Calendar as CalendarIcon
 } from 'lucide-react';
 
 const SettingsPage = () => {
@@ -141,7 +141,7 @@ const SettingsPage = () => {
             <span className="hidden sm:inline">النسخ الاحتياطي</span>
           </TabsTrigger>
           <TabsTrigger value="activity" className="flex items-center gap-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
-            <Calendar className="w-4 h-4" />
+            <CalendarIcon className="w-4 h-4" />
             <span className="hidden sm:inline">السجل</span>
           </TabsTrigger>
         </TabsList>
@@ -303,7 +303,7 @@ const SettingsPage = () => {
                   { key: 'emailNotifications', label: 'إشعارات البريد الإلكتروني', desc: 'تلقي الإشعارات عبر البريد الإلكتروني', icon: Mail },
                   { key: 'smsNotifications', label: 'إشعارات الرسائل النصية', desc: 'تلقي الإشعارات عبر الرسائل النصية', icon: Bell },
                   { key: 'pushNotifications', label: 'الإشعارات الفورية', desc: 'تلقي الإشعارات الفورية في المتصفح', icon: Globe },
-                  { key: 'weeklyReports', label: 'التقارير الأسبوعية', desc: 'تلقي تقارير أسبوعية عن أداء المدرسة', icon: Calendar },
+                  { key: 'weeklyReports', label: 'التقارير الأسبوعية', desc: 'تلقي تقارير أسبوعية عن أداء المدرسة', icon: CalendarIcon },
                   { key: 'attendanceAlerts', label: 'تنبيهات الحضور', desc: 'تنبيهات عند تسجيل غياب الطلاب', icon: User },
                   { key: 'gradeUpdates', label: 'تحديثات الدرجات', desc: 'إشعارات عند تحديث درجات الطلاب', icon: Settings },
                   { key: 'parentNotifications', label: 'إشعارات أولياء الأمور', desc: 'إرسال إشعارات لأولياء الأمور', icon: User },
@@ -523,7 +523,7 @@ const SettingsPage = () => {
           <Card className="animate-slide-in-right hover-lift">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
+                <CalendarIcon className="w-5 h-5" />
                 سجل النشاطات
               </CardTitle>
               

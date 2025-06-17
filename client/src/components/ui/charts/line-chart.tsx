@@ -1,8 +1,8 @@
 "use client"
 
-import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+import { Line, LineChart as RechartsLineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
-interface BarChartProps {
+interface LineChartProps {
   data: any[]
   index: string
   categories: string[]
@@ -18,7 +18,7 @@ interface BarChartProps {
   height?: number
 }
 
-export function BarChart({
+export function LineChart({
   data,
   index,
   categories,
@@ -32,10 +32,10 @@ export function BarChart({
   showTooltip = true,
   showGrid = true,
   height = 300,
-}: BarChartProps) {
+}: LineChartProps) {
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <RechartsBarChart
+      <RechartsLineChart
         data={data}
         margin={{
           top: 5,
@@ -99,17 +99,20 @@ export function BarChart({
           />
         )}
         {categories.map((category, index) => (
-          <Bar
+          <Line
             key={category}
+            type="monotone"
             dataKey={category}
-            fill={colors[index % colors.length]}
-            radius={[4, 4, 0, 0]}
+            stroke={colors[index % colors.length]}
+            strokeWidth={2}
+            dot={{ fill: colors[index % colors.length], strokeWidth: 2, r: 4 }}
+            activeDot={{ r: 6, stroke: colors[index % colors.length], strokeWidth: 2 }}
             isAnimationActive={showAnimation}
             animationDuration={1000}
             animationEasing="ease-out"
           />
         ))}
-      </RechartsBarChart>
+      </RechartsLineChart>
     </ResponsiveContainer>
   )
-}
+} 

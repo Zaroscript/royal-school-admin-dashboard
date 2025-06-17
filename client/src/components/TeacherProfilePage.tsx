@@ -25,7 +25,7 @@ import {
   Mail,
   Phone,
   MapPin,
-  Calendar,
+  Calendar as CalendarIcon,
   BookOpen,
   Users,
   Star,
@@ -42,7 +42,10 @@ import {
   ChevronUp,
   ChevronDown,
   BarChart,
-  Download
+  Download,
+  Edit,
+  ArrowLeft,
+  Share2
 } from 'lucide-react';
 
 interface TeacherProfile {
@@ -245,13 +248,18 @@ const TeacherProfilePage = () => {
 
                 <div className="mt-6 flex flex-col gap-3">
                   <Button className="w-full" size="lg">
-                    <Calendar className="w-4 h-4 mr-2" />
+                    <CalendarIcon className="w-4 h-4 mr-2" />
                     جدول الحصص
                   </Button>
                   <Button variant="outline" className="w-full" size="lg">
                     <Download className="w-4 h-4 mr-2" />
                     تحميل السيرة الذاتية
                   </Button>
+                </div>
+
+                <div className="flex items-center text-sm text-gray-500 mt-4">
+                  <CalendarIcon className="w-4 h-4 mr-2" />
+                  تاريخ الانضمام: {teacher.joinDate}
                 </div>
               </CardContent>
             </Card>

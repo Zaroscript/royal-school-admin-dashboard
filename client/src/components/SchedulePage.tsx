@@ -1,16 +1,72 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {
-  Calendar,
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  Calendar as CalendarIcon,
   Clock,
   MapPin,
-  BookOpen,
   Users,
+  BookOpen,
   Plus,
-  Filter
+  Edit,
+  Trash2,
+  Filter,
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  MoreVertical,
+  Bell,
+  AlertCircle,
+  CheckCircle,
+  XCircle,
+  Info,
+  Star,
+  Target,
+  TrendingUp,
+  BarChart,
+  PieChart,
+  Activity,
+  GraduationCap,
+  Award,
+  Book,
+  FileText,
+  Download,
+  Upload,
+  Settings,
+  Eye,
+  EyeOff,
+  Lock,
+  Unlock,
+  User,
+  UserCheck,
+  UserX,
+  Mail,
+  Phone,
+  MessageSquare,
+  Video,
+  Mic,
+  MicOff,
+  VideoOff,
+  Wifi,
+  WifiOff,
+  Battery,
+  BatteryCharging,
+  Signal,
+  SignalHigh,
+  SignalLow,
+  SignalMedium,
+  SignalZero,
+  Wifi as WifiIcon,
+  WifiOff as WifiOffIcon,
+  Battery as BatteryIcon,
+  BatteryCharging as BatteryChargingIcon,
+  Signal as SignalIcon,
+  SignalHigh as SignalHighIcon,
+  SignalLow as SignalLowIcon,
+  SignalMedium as SignalMediumIcon,
+  SignalZero as SignalZeroIcon
 } from 'lucide-react';
 
 interface ScheduleEvent {
@@ -114,7 +170,7 @@ const SchedulePage = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Calendar className="w-5 h-5" />
+            <CalendarIcon className="w-5 h-5" />
             نظرة عامة على الأسبوع
           </CardTitle>
         </CardHeader>
@@ -232,7 +288,7 @@ const SchedulePage = () => {
         </Card>
         <Card className="animate-slide-in-right" style={{ animationDelay: '0.3s' }}>
           <CardContent className="p-6 text-center">
-            <Calendar className="w-8 h-8 text-orange-500 mx-auto mb-2" />
+            <CalendarIcon className="w-8 h-8 text-orange-500 mx-auto mb-2" />
             <div className="text-2xl font-bold text-gray-900 dark:text-white">3</div>
             <div className="text-sm text-gray-600 dark:text-gray-400">فعاليات خاصة</div>
           </CardContent>

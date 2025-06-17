@@ -1,153 +1,399 @@
-import React, { useState } from 'react';
-import { Link, useLocation, Outlet } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { useTheme } from '@/contexts/ThemeContext';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import React, { useState, useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
+import Header from './Header';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
-  Home,
+  LayoutDashboard,
   Users,
+  GraduationCap,
   BookOpen,
   Calendar,
+  FileText,
+  BarChart3,
   Settings,
   LogOut,
   Menu,
-  X,
+  Crown,
+  Shield,
+  Activity,
+  Bell,
+  User,
+  Home,
+  School,
+  Library,
+  Calculator,
+  CreditCard,
+  ClipboardList,
+  Award,
+  Clock,
+  TrendingUp,
+  Database,
+  Server,
+  Wifi,
+  Battery,
+  Zap,
+  Star,
+  Target,
+  Trophy,
+  ChevronRight,
+  ChevronLeft,
+  Search,
+  Filter,
+  Plus,
+  MoreVertical,
   Sun,
   Moon,
-  GraduationCap,
-  UserCheck,
-  BarChart3,
-  FileText,
-  DollarSign,
-  TrendingUp,
-  BadgeCheck
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 
 const DashboardLayout = () => {
-  const { user, logout } = useAuth();
-  const { isDark, toggleTheme } = useTheme();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const { isDark, toggleTheme } = useTheme();
+  const { user, logout } = useAuth();
   const location = useLocation();
-  const currentPath = location.pathname.split('/')[1] || 'dashboard';
+  const navigate = useNavigate();
 
-  const menuItems = [
-    { id: '', label: 'لوحة التحكم', icon: Home },
-    { id: 'students', label: 'الطلاب', icon: Users },
-    { id: 'teachers', label: 'المعلمين', icon: GraduationCap },
-    { id: 'attendance', label: 'الحضور والغياب', icon: UserCheck },
-    { id: 'courses', label: 'المواد الدراسية', icon: BookOpen },
-    { id: 'exams', label: 'الامتحانات', icon: FileText },
-    { id: 'schedule', label: 'الجدول الدراسي', icon: Calendar },
-    { id: 'library', label: 'المكتبة', icon: BookOpen },
-    { id: 'events', label: 'الأحداث', icon: Calendar },
-    { id: 'student-affairs', label: 'شؤون الطلاب', icon: Users },
-    { id: 'grades', label: 'الدرجات والتقدم', icon: TrendingUp },
-    { id: 'finance', label: 'الإدارة المالية', icon: DollarSign },
-    { id: 'reports', label: 'التقارير', icon: BarChart3 },
-    { id: 'documents', label: 'المستندات', icon: FileText },
-    { id: 'settings', label: 'الإعدادات', icon: Settings },
+  // Close sidebar on mobile when route changes
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
+  const navigation = [
+    {
+      name: 'لوحة التحكم',
+      href: '/dashboard',
+      icon: LayoutDashboard,
+      badge: null,
+      description: 'نظرة عامة على النظام',
+      gradient: 'from-red-500 to-orange-500',
+      category: 'main'
+    },
+    {
+      name: 'الطلاب',
+      href: '/students',
+      icon: Users,
+      badge: '125',
+      description: 'إدارة بيانات الطلاب',
+      gradient: 'from-blue-500 to-cyan-500',
+      category: 'academic'
+    },
+    {
+      name: 'المعلمين',
+      href: '/teachers',
+      icon: GraduationCap,
+      badge: '45',
+      description: 'إدارة بيانات المعلمين',
+      gradient: 'from-purple-500 to-pink-500',
+      category: 'academic'
+    },
+    {
+      name: 'المواد الدراسية',
+      href: '/courses',
+      icon: BookOpen,
+      badge: '32',
+      description: 'إدارة المواد والمناهج',
+      gradient: 'from-green-500 to-emerald-500',
+      category: 'academic'
+    },
+    {
+      name: 'الجدول الدراسي',
+      href: '/schedule',
+      icon: Calendar,
+      badge: null,
+      description: 'إدارة الجداول الدراسية',
+      gradient: 'from-orange-500 to-red-500',
+      category: 'academic'
+    },
+    {
+      name: 'الحضور والغياب',
+      href: '/attendance',
+      icon: ClipboardList,
+      badge: 'اليوم',
+      description: 'تتبع حضور الطلاب',
+      gradient: 'from-indigo-500 to-blue-500',
+      category: 'academic'
+    },
+    {
+      name: 'الامتحانات',
+      href: '/exams',
+      icon: Award,
+      badge: 'قريب',
+      description: 'إدارة الامتحانات والنتائج',
+      gradient: 'from-yellow-500 to-orange-500',
+      category: 'academic'
+    },
+    {
+      name: 'الدرجات',
+      href: '/grades',
+      icon: TrendingUp,
+      badge: null,
+      description: 'إدارة درجات الطلاب',
+      gradient: 'from-teal-500 to-cyan-500',
+      category: 'academic'
+    },
+    {
+      name: 'المكتبة',
+      href: '/library',
+      icon: Library,
+      badge: '1.2K',
+      description: 'إدارة المكتبة والكتب',
+      gradient: 'from-rose-500 to-pink-500',
+      category: 'services'
+    },
+    {
+      name: 'الأنشطة والفعاليات',
+      href: '/events',
+      icon: Activity,
+      badge: '5',
+      description: 'إدارة الأنشطة المدرسية',
+      gradient: 'from-violet-500 to-purple-500',
+      category: 'services'
+    },
+    {
+      name: 'الوثائق',
+      href: '/documents',
+      icon: FileText,
+      badge: '250',
+      description: 'إدارة الوثائق والملفات',
+      gradient: 'from-slate-500 to-gray-500',
+      category: 'services'
+    },
+    {
+      name: 'الشؤون المالية',
+      href: '/finance',
+      icon: CreditCard,
+      badge: 'محدث',
+      description: 'إدارة الشؤون المالية',
+      gradient: 'from-emerald-500 to-green-500',
+      category: 'finance'
+    },
+    {
+      name: 'التقارير',
+      href: '/reports',
+      icon: BarChart3,
+      badge: null,
+      description: 'عرض وتحليل التقارير',
+      gradient: 'from-amber-500 to-yellow-500',
+      category: 'reports'
+    },
+    {
+      name: 'شؤون الطلاب',
+      href: '/student-affairs',
+      icon: School,
+      badge: '12',
+      description: 'إدارة شؤون الطلاب',
+      gradient: 'from-red-500 to-rose-500',
+      category: 'services'
+    },
+    {
+      name: 'الإعدادات',
+      href: '/settings',
+      icon: Settings,
+      badge: null,
+      description: 'إعدادات النظام',
+      gradient: 'from-gray-500 to-slate-500',
+      category: 'system'
+    }
   ];
 
+  const filteredNavigation = navigation.filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Failed to logout:', error);
+    }
+  };
+
+  const isActive = (href) => location.pathname === href;
+
+  const categories = {
+    main: 'الرئيسية',
+    academic: 'الأكاديمي',
+    services: 'الخدمات',
+    finance: 'المالية',
+    reports: 'التقارير',
+    system: 'النظام'
+  };
+
+  const groupedNavigation = filteredNavigation.reduce((acc, item) => {
+    if (!acc[item.category]) {
+      acc[item.category] = [];
+    }
+    acc[item.category].push(item);
+    return acc;
+  }, {});
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Sidebar */}
-      <aside
-        className={`fixed top-0 right-0 z-40 w-64 h-screen transition-transform ${
+    <div className="h-screen bg-background flex animate-fade-in-up overflow-hidden">
+      {/* Sticky Sidebar */}
+      <aside className={`fixed inset-y-0 right-0 z-50 w-72 transform transition-all duration-300 ease-in-out ${
           sidebarOpen ? 'translate-x-0' : 'translate-x-full'
-        } md:translate-x-0`}
-      >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-gray-800">
-          <div className="flex items-center justify-between mb-5">
-            <h2 className="text-xl font-semibold">Royal School</h2>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden"
-              onClick={() => setSidebarOpen(false)}
-            >
-              <X className="h-6 w-6" />
-            </Button>
+      } lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen`}>
+        <div className="flex h-full flex-col bg-card/80 backdrop-blur-xl border-l border-border/50 royal-sidebar shadow-2xl">
+          {/* Sidebar Header */}
+          <div className="bg-gradient-to-br from-red-500 via-blue-500 to-green-500 p-6 royal-sidebar-header relative overflow-hidden flex-shrink-0">
+            <div className="absolute inset-0 bg-gradient-to-br from-red-500/20 via-blue-500/20 to-green-500/20 animate-pulse-slow"></div>
+            <div className="relative z-10 flex items-center space-x-3 space-x-reverse">
+              <div className="relative group">
+                <img 
+                  src="/logo.png" 
+                  alt="Royal School Logo" 
+                  className="h-12 w-12 rounded-xl shadow-lg hover-scale transition-all duration-300"
+                />
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              <div className="flex-1">
+                <h1 className="text-xl font-bold text-white animate-slide-in-left">
+                  Royal School
+                </h1>
+                <p className="text-xs text-white/80 animate-slide-in-left stagger-1">
+                  نظام إدارة المدرسة الملكية
+                </p>
+              </div>
+            </div>
           </div>
 
-          <ul className="space-y-2 font-medium">
-            {menuItems.map((item) => {
-              const isActive = currentPath === item.id;
-              const ItemIcon = item.icon;
+          {/* Search Bar */}
+          <div className="p-4 border-b border-border/50 flex-shrink-0">
+            <div className="relative">
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="البحث في القائمة..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pr-10 pl-4 py-2 text-sm bg-muted/50 border border-border/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
+              />
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 space-y-1 p-4 overflow-y-auto custom-scrollbar min-h-0">
+            {Object.entries(groupedNavigation).map(([category, items]) => (
+              <div key={category} className="space-y-2">
+                <div className="px-3 py-2">
+                  <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    {categories[category]}
+                  </h3>
+                </div>
+                {(items as any[]).map((item, index) => {
+                  const Icon = item.icon;
               return (
-                <li key={item.id}>
-                  <Link
-                    to={`/${item.id}`}
-                    className={`flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group ${
-                      isActive ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300' : 'text-gray-900 dark:text-white'
-                    }`}
-                  >
-                    <ItemIcon className={`w-5 h-5 ${isActive ? 'text-blue-600 dark:text-blue-300' : 'text-gray-500 dark:text-gray-400'}`} />
-                    <span className="ms-3">{item.label}</span>
-                  </Link>
-                </li>
+                    <button
+                      key={item.name}
+                      onClick={() => {
+                        navigate(item.href);
+                        setSidebarOpen(false);
+                      }}
+                      className={`w-full flex items-center space-x-3 space-x-reverse px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 group focus:outline-none focus:ring-0 focus:border-0 hover-lift animate-slide-in-left nav-item ${
+                        isActive(item.href)
+                          ? 'bg-gradient-to-r from-red-500 to-blue-500 text-white shadow-lg'
+                          : 'text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground'
+                      }`}
+                      style={{ animationDelay: `${index * 0.05}s` }}
+                    >
+                      <div className={`p-2 rounded-lg transition-all duration-300 ${
+                        isActive(item.href)
+                          ? 'bg-white/20 text-white'
+                          : `bg-gradient-to-br ${item.gradient} text-white group-hover:scale-110`
+                      }`}>
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <div className="flex-1 text-right">
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium">{item.name}</span>
+                          {item.badge && (
+                            <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                              isActive(item.href)
+                                ? 'bg-white/20 text-white'
+                                : 'bg-primary/10 text-primary'
+                            }`}>
+                              {item.badge}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs opacity-70 mt-1">{item.description}</p>
+                      </div>
+                    </button>
               );
             })}
-          </ul>
+              </div>
+            ))}
+          </nav>
+
+          {/* Sidebar Footer */}
+          <div className="p-4 border-t border-border/50 space-y-3 flex-shrink-0">
+            {/* User Profile */}
+            <div className="flex items-center space-x-3 space-x-reverse p-3 rounded-xl bg-muted/30 hover:bg-muted/50 transition-all duration-300">
+              <div className="relative">
+                <img
+                  src={user?.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face"}
+                  alt="Profile"
+                  className="h-10 w-10 rounded-full border-2 border-primary/20 hover-scale"
+                />
+                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-background animate-pulse"></div>
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-foreground">{user?.name || 'المستخدم'}</p>
+                <p className="text-xs text-muted-foreground">{user?.role || 'مدير النظام'}</p>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="flex items-center space-x-2 space-x-reverse">
+              <button
+                onClick={toggleTheme}
+                className="flex-1 flex items-center justify-center space-x-2 space-x-reverse px-3 py-2 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted/50 transition-all duration-300 hover-lift"
+              >
+                {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                <span>{isDark ? 'الوضع النهاري' : 'الوضع الليلي'}</span>
+              </button>
+              <button className="p-2 text-muted-foreground hover:bg-muted/50 rounded-lg transition-all duration-300 hover-lift">
+                <Volume2 className="h-4 w-4" />
+              </button>
+            </div>
+            
+            {/* Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center space-x-3 space-x-reverse px-4 py-3 text-sm font-medium rounded-xl text-red-500 hover:bg-red-500/10 transition-all duration-300 hover-lift"
+            >
+              <LogOut className="h-5 w-5" />
+              <span>تسجيل الخروج</span>
+            </button>
+          </div>
         </div>
       </aside>
 
-      {/* Main content */}
-      <div className="md:mr-64">
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col min-w-0 lg:mr-0">
         {/* Header */}
-        <header className="bg-white dark:bg-gray-800 shadow-sm">
-          <div className="flex items-center justify-between px-4 py-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <Menu className="h-6 w-6" />
-            </Button>
+        <Header onMenuClick={() => setSidebarOpen(true)} />
 
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" onClick={toggleTheme}>
-                {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-              </Button>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={user?.avatar} alt={user?.name} />
-                      <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuItem className="flex-col items-start">
-                    <div className="font-medium">{user?.name}</div>
-                    <div className="text-sm text-gray-500">{user?.email}</div>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>تسجيل الخروج</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+        {/* Main Content Area */}
+        <main className="flex-1 overflow-y-auto custom-scrollbar">
+          <div className="p-6 animate-fade-in-up">
+            <Outlet />
           </div>
-        </header>
-
-        {/* Page content */}
-        <main className="p-4">
-          <Outlet />
         </main>
       </div>
+
+      {/* Mobile Overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden animate-fade-in-up backdrop-blur-sm"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
     </div>
   );
 };
