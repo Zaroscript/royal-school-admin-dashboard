@@ -112,10 +112,10 @@ const Dashboard = () => {
       change: '+12%',
       changeType: 'increase',
       icon: Users,
-      color: 'text-red-500',
-      bgColor: 'bg-red-500/10',
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-500/10',
       description: 'مقارنة بالشهر الماضي',
-      gradient: 'from-red-500/20 to-red-500/5'
+      gradient: 'from-blue-500/20 to-blue-500/5'
     },
     {
       title: 'المعلمين النشطين',
@@ -123,10 +123,10 @@ const Dashboard = () => {
       change: '+3',
       changeType: 'increase',
       icon: GraduationCap,
-      color: 'text-blue-500',
-      bgColor: 'bg-blue-500/10',
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-500/10',
       description: 'مقارنة بالشهر الماضي',
-      gradient: 'from-blue-500/20 to-blue-500/5'
+      gradient: 'from-purple-500/20 to-purple-500/5'
     },
     {
       title: 'المواد الدراسية',
@@ -134,10 +134,10 @@ const Dashboard = () => {
       change: '+2',
       changeType: 'increase',
       icon: BookOpen,
-      color: 'text-green-500',
-      bgColor: 'bg-green-500/10',
+      color: 'text-indigo-600',
+      bgColor: 'bg-indigo-500/10',
       description: 'مقارنة بالشهر الماضي',
-      gradient: 'from-green-500/20 to-green-500/5'
+      gradient: 'from-indigo-500/20 to-indigo-500/5'
     },
     {
       title: 'معدل الحضور',
@@ -145,10 +145,10 @@ const Dashboard = () => {
       change: '+2.1%',
       changeType: 'increase',
       icon: TrendingUp,
-      color: 'text-orange-500',
-      bgColor: 'bg-orange-500/10',
+      color: 'text-cyan-600',
+      bgColor: 'bg-cyan-500/10',
       description: 'مقارنة بالأسبوع الماضي',
-      gradient: 'from-orange-500/20 to-orange-500/5'
+      gradient: 'from-cyan-500/20 to-cyan-500/5'
     }
   ];
 
@@ -274,8 +274,8 @@ const Dashboard = () => {
   return (
     <div className="space-y-6 animate-fade-in-up">
       {/* Enhanced Welcome Section */}
-      <div className="bg-gradient-to-r from-red-500 via-blue-500 to-green-500 p-8 rounded-2xl text-white relative overflow-hidden animate-slide-in-bottom">
-        <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 to-blue-500/20 animate-pulse-slow"></div>
+      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 p-8 rounded-2xl text-white relative overflow-hidden animate-slide-in-bottom">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-blue-600/20 animate-pulse-slow"></div>
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-6">
             <div className="space-y-3">
@@ -287,7 +287,7 @@ const Dashboard = () => {
               </p>
               <div className="flex items-center space-x-4 space-x-reverse animate-slide-in-left stagger-2">
                 <div className="flex items-center space-x-2 space-x-reverse">
-                  <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                  <div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></div>
                   <span className="text-sm">النظام يعمل بشكل طبيعي</span>
                 </div>
                 <div className="flex items-center space-x-2 space-x-reverse">
@@ -379,8 +379,8 @@ const Dashboard = () => {
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <div className="flex items-center space-x-2 space-x-reverse">
-                    <div className="p-2 rounded-lg bg-red-500/10 animate-pulse-slow">
-                      <Activity className="h-5 w-5 text-red-500" />
+                    <div className="p-2 rounded-lg bg-blue-500/10 animate-pulse-slow">
+                      <Activity className="h-5 w-5 text-blue-500" />
                     </div>
                     <span>النشاطات الأخيرة</span>
                   </div>
@@ -399,12 +399,12 @@ const Dashboard = () => {
                         style={{ animationDelay: `${index * 0.1}s` }}
                       >
                         <div className={`p-2 rounded-lg ${
-                          activity.type === 'success' ? 'bg-green-500/10' : 
-                          activity.type === 'warning' ? 'bg-orange-500/10' : 'bg-blue-500/10'
+                          activity.type === 'success' ? 'bg-emerald-500/10' : 
+                          activity.type === 'warning' ? 'bg-amber-500/10' : 'bg-blue-500/10'
                         }`}>
                           <Icon className={`h-4 w-4 ${
-                            activity.type === 'success' ? 'text-green-500' : 
-                            activity.type === 'warning' ? 'text-orange-500' : 'text-blue-500'
+                            activity.type === 'success' ? 'text-emerald-500' : 
+                            activity.type === 'warning' ? 'text-amber-500' : 'text-blue-500'
                           }`} />
                         </div>
                         <div className="flex-1">
@@ -431,8 +431,8 @@ const Dashboard = () => {
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <div className="flex items-center space-x-2 space-x-reverse">
-                    <div className="p-2 rounded-lg bg-blue-500/10 animate-float">
-                      <Calendar className="h-5 w-5 text-blue-500" />
+                    <div className="p-2 rounded-lg bg-purple-500/10 animate-float">
+                      <Calendar className="h-5 w-5 text-purple-500" />
                     </div>
                     <span>الأحداث القادمة</span>
                   </div>
@@ -453,11 +453,11 @@ const Dashboard = () => {
                         <div className="flex items-center space-x-3 space-x-reverse">
                           <div className={`p-2 rounded-lg ${
                             event.priority === 'high' ? 'bg-red-500/10' : 
-                            event.priority === 'medium' ? 'bg-orange-500/10' : 'bg-green-500/10'
+                            event.priority === 'medium' ? 'bg-amber-500/10' : 'bg-emerald-500/10'
                           }`}>
                             <Icon className={`h-4 w-4 ${
                               event.priority === 'high' ? 'text-red-500' : 
-                              event.priority === 'medium' ? 'text-orange-500' : 'text-green-500'
+                              event.priority === 'medium' ? 'text-amber-500' : 'text-emerald-500'
                             }`} />
                           </div>
                           <div>
@@ -469,7 +469,7 @@ const Dashboard = () => {
                           variant="outline" 
                           className={`text-xs ${
                             event.priority === 'high' ? 'border-red-500 text-red-500' : 
-                            event.priority === 'medium' ? 'border-orange-500 text-orange-500' : 'border-green-500 text-green-500'
+                            event.priority === 'medium' ? 'border-amber-500 text-amber-500' : 'border-emerald-500 text-emerald-500'
                           }`}
                         >
                           {event.type === 'exam' ? 'امتحان' : 
@@ -478,7 +478,7 @@ const Dashboard = () => {
                            event.type === 'ceremony' ? 'حفل' :
                            event.type === 'workshop' ? 'ورشة' : 'معرض'}
                         </Badge>
-                </div>
+                      </div>
                     );
                   })}
                 </div>
@@ -491,14 +491,14 @@ const Dashboard = () => {
                 </Button>
               </CardContent>
             </Card>
-      </div>
+          </div>
 
           {/* Academic Performance Chart */}
           <Card className="card-hover animate-slide-in-bottom stagger-11">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 space-x-reverse">
-                <div className="p-2 rounded-lg bg-green-500/10 animate-bounce-gentle">
-                  <BarChart3 className="h-5 w-5 text-green-500" />
+                <div className="p-2 rounded-lg bg-indigo-500/10 animate-bounce-gentle">
+                  <BarChart3 className="h-5 w-5 text-indigo-500" />
                 </div>
                 <span>الأداء الأكاديمي</span>
               </CardTitle>
@@ -512,7 +512,7 @@ const Dashboard = () => {
                       <span className="text-sm font-medium">{subject.subject}</span>
                       <div className="flex items-center space-x-2 space-x-reverse">
                         <span className="text-sm font-bold">{subject.average}%</span>
-                        <Badge variant="outline" className="text-xs text-green-500 border-green-500">
+                        <Badge variant="outline" className="text-xs text-emerald-500 border-emerald-500">
                           {subject.improvement}
                         </Badge>
                       </div>
@@ -535,8 +535,8 @@ const Dashboard = () => {
           <Card className="card-hover animate-slide-in-bottom stagger-12">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 space-x-reverse">
-                <div className="p-2 rounded-lg bg-orange-500/10 animate-pulse-slow">
-                  <DollarSign className="h-5 w-5 text-orange-500" />
+                <div className="p-2 rounded-lg bg-cyan-500/10 animate-pulse-slow">
+                  <DollarSign className="h-5 w-5 text-cyan-500" />
                </div>
                 <span>الملخص المالي</span>
               </CardTitle>
@@ -556,7 +556,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-medium text-green-500">+{month.income.toLocaleString()}</p>
+                      <p className="text-sm font-medium text-emerald-500">+{month.income.toLocaleString()}</p>
                       <p className="text-xs text-muted-foreground">-{month.expenses.toLocaleString()}</p>
                     </div>
                   </div>
@@ -593,8 +593,8 @@ const Dashboard = () => {
                   >
                     <div className="flex items-start space-x-2 space-x-reverse">
                       <div className={`w-2 h-2 rounded-full mt-2 ${
-                        notification.type === 'success' ? 'bg-green-500' : 
-                        notification.type === 'warning' ? 'bg-orange-500' : 'bg-blue-500'
+                        notification.type === 'success' ? 'bg-emerald-500' : 
+                        notification.type === 'warning' ? 'bg-amber-500' : 'bg-blue-500'
                       } ${!notification.read ? 'animate-pulse' : ''}`}></div>
                       <div className="flex-1">
                         <p className="text-sm font-medium text-foreground">{notification.title}</p>
@@ -619,8 +619,8 @@ const Dashboard = () => {
           <Card className="card-hover animate-slide-in-bottom stagger-8">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 space-x-reverse">
-                <div className="p-2 rounded-lg bg-yellow-500/10 animate-float">
-                  <Sun className="h-5 w-5 text-yellow-500" />
+                <div className="p-2 rounded-lg bg-blue-500/10 animate-float">
+                  <Sun className="h-5 w-5 text-blue-500" />
       </div>
                 <span>الطقس</span>
               </CardTitle>
@@ -628,7 +628,7 @@ const Dashboard = () => {
             <CardContent>
               <div className="text-center space-y-4">
                 <div className="flex items-center justify-center space-x-2 space-x-reverse">
-                  <Sun className="h-12 w-12 text-yellow-500 animate-pulse-slow" />
+                  <Sun className="h-12 w-12 text-blue-500 animate-pulse-slow" />
                   <div>
                     <p className="text-3xl font-bold">{weatherData.temperature}°C</p>
                     <p className="text-sm text-muted-foreground">{weatherData.condition}</p>
@@ -649,7 +649,7 @@ const Dashboard = () => {
                     <div key={index} className="text-center">
                       <p className="font-medium">{day.day}</p>
                       <div className="flex items-center justify-center mt-1">
-                        {day.icon === Sun ? <Sun className="h-4 w-4 text-yellow-500" /> :
+                        {day.icon === Sun ? <Sun className="h-4 w-4 text-blue-500" /> :
                          day.icon === Cloud ? <Cloud className="h-4 w-4 text-gray-500" /> :
                          <CloudRain className="h-4 w-4 text-blue-500" />}
                       </div>
@@ -665,8 +665,8 @@ const Dashboard = () => {
           <Card className="card-hover animate-slide-in-bottom stagger-9">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 space-x-reverse">
-                <div className="p-2 rounded-lg bg-green-500/10 animate-heart-beat">
-                  <Shield className="h-5 w-5 text-green-500" />
+                <div className="p-2 rounded-lg bg-indigo-500/10 animate-heart-beat">
+                  <Shield className="h-5 w-5 text-indigo-500" />
                 </div>
                 <span>حالة النظام</span>
               </CardTitle>
@@ -693,8 +693,8 @@ const Dashboard = () => {
           <Card className="card-hover animate-slide-in-bottom stagger-10">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 space-x-reverse">
-                <div className="p-2 rounded-lg bg-red-500/10 animate-pulse-slow">
-                  <Zap className="h-5 w-5 text-red-500" />
+                <div className="p-2 rounded-lg bg-purple-500/10 animate-pulse-slow">
+                  <Zap className="h-5 w-5 text-purple-500" />
                 </div>
                 <span>إجراءات سريعة</span>
               </CardTitle>

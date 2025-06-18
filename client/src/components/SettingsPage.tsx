@@ -30,7 +30,7 @@ import {
 const SettingsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
-  
+
   const [generalSettings, setGeneralSettings] = useState({
     schoolName: 'مدرسة المستقبل',
     schoolAddress: 'الرياض، المملكة العربية السعودية',
@@ -105,7 +105,7 @@ const SettingsPage = () => {
             </p>
           </div>
         </div>
-        
+
         {/* System Health Indicators */}
         <div className="flex gap-2">
           <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
@@ -120,22 +120,10 @@ const SettingsPage = () => {
 
       <Tabs defaultValue="general" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2 lg:grid-cols-6 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl">
-          <TabsTrigger value="general" className="flex items-center gap-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
-            <Settings className="w-4 h-4" />
-            <span className="hidden sm:inline">عام</span>
-          </TabsTrigger>
-          <TabsTrigger value="notifications" className="flex items-center gap-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
-            <Bell className="w-4 h-4" />
-            <span className="hidden sm:inline">الإشعارات</span>
-          </TabsTrigger>
-          <TabsTrigger value="security" className="flex items-center gap-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
-            <Shield className="w-4 h-4" />
-            <span className="hidden sm:inline">الأمان</span>
-          </TabsTrigger>
-          <TabsTrigger value="appearance" className="flex items-center gap-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
-            <Palette className="w-4 h-4" />
-            <span className="hidden sm:inline">المظهر</span>
-          </TabsTrigger>
+
+
+
+
           <TabsTrigger value="backup" className="flex items-center gap-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
             <Database className="w-4 h-4" />
             <span className="hidden sm:inline">النسخ الاحتياطي</span>
@@ -143,6 +131,22 @@ const SettingsPage = () => {
           <TabsTrigger value="activity" className="flex items-center gap-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
             <CalendarIcon className="w-4 h-4" />
             <span className="hidden sm:inline">السجل</span>
+          </TabsTrigger>
+          <TabsTrigger value="appearance" className="flex items-center gap-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
+            <Palette className="w-4 h-4" />
+            <span className="hidden sm:inline">المظهر</span>
+          </TabsTrigger>
+          <TabsTrigger value="security" className="flex items-center gap-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
+            <Shield className="w-4 h-4" />
+            <span className="hidden sm:inline">الأمان</span>
+          </TabsTrigger>
+          <TabsTrigger value="notifications" className="flex items-center gap-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
+            <Bell className="w-4 h-4" />
+            <span className="hidden sm:inline">الإشعارات</span>
+          </TabsTrigger>
+          <TabsTrigger value="general" className="flex items-center gap-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">
+            <Settings className="w-4 h-4" />
+            <span className="hidden sm:inline">عام</span>
           </TabsTrigger>
         </TabsList>
 
@@ -164,7 +168,7 @@ const SettingsPage = () => {
                       <Input
                         id="schoolName"
                         value={generalSettings.schoolName}
-                        onChange={(e) => setGeneralSettings({...generalSettings, schoolName: e.target.value})}
+                        onChange={(e) => setGeneralSettings({ ...generalSettings, schoolName: e.target.value })}
                         className="bg-gray-50 dark:bg-gray-800"
                       />
                     </div>
@@ -174,7 +178,7 @@ const SettingsPage = () => {
                         id="email"
                         type="email"
                         value={generalSettings.email}
-                        onChange={(e) => setGeneralSettings({...generalSettings, email: e.target.value})}
+                        onChange={(e) => setGeneralSettings({ ...generalSettings, email: e.target.value })}
                         className="bg-gray-50 dark:bg-gray-800"
                       />
                     </div>
@@ -183,7 +187,7 @@ const SettingsPage = () => {
                       <Input
                         id="phone"
                         value={generalSettings.phoneNumber}
-                        onChange={(e) => setGeneralSettings({...generalSettings, phoneNumber: e.target.value})}
+                        onChange={(e) => setGeneralSettings({ ...generalSettings, phoneNumber: e.target.value })}
                         className="bg-gray-50 dark:bg-gray-800"
                       />
                     </div>
@@ -192,7 +196,7 @@ const SettingsPage = () => {
                       <Input
                         id="website"
                         value={generalSettings.website}
-                        onChange={(e) => setGeneralSettings({...generalSettings, website: e.target.value})}
+                        onChange={(e) => setGeneralSettings({ ...generalSettings, website: e.target.value })}
                         className="bg-gray-50 dark:bg-gray-800"
                       />
                     </div>
@@ -201,7 +205,7 @@ const SettingsPage = () => {
                       <Input
                         id="establishmentYear"
                         value={generalSettings.establishmentYear}
-                        onChange={(e) => setGeneralSettings({...generalSettings, establishmentYear: e.target.value})}
+                        onChange={(e) => setGeneralSettings({ ...generalSettings, establishmentYear: e.target.value })}
                         className="bg-gray-50 dark:bg-gray-800"
                       />
                     </div>
@@ -210,7 +214,7 @@ const SettingsPage = () => {
                       <Input
                         id="studentCapacity"
                         value={generalSettings.studentCapacity}
-                        onChange={(e) => setGeneralSettings({...generalSettings, studentCapacity: e.target.value})}
+                        onChange={(e) => setGeneralSettings({ ...generalSettings, studentCapacity: e.target.value })}
                         className="bg-gray-50 dark:bg-gray-800"
                       />
                     </div>
@@ -220,11 +224,11 @@ const SettingsPage = () => {
                     <Input
                       id="address"
                       value={generalSettings.schoolAddress}
-                      onChange={(e) => setGeneralSettings({...generalSettings, schoolAddress: e.target.value})}
+                      onChange={(e) => setGeneralSettings({ ...generalSettings, schoolAddress: e.target.value })}
                       className="bg-gray-50 dark:bg-gray-800"
                     />
                   </div>
-                  <Button 
+                  <Button
                     onClick={() => handleSaveSettings('عام')}
                     className="bg-gradient-to-r from-blue-500 to-red-500 hover:from-blue-600 hover:to-red-600 text-white ripple"
                   >
@@ -292,9 +296,9 @@ const SettingsPage = () => {
         <TabsContent value="notifications">
           <Card className="animate-slide-in-right hover-lift">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Bell className="w-5 h-5" />
+              <CardTitle className="flex items-center justify-end gap-2">
                 إعدادات الإشعارات المتقدمة
+                <Bell className="w-5 h-5" />
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -312,24 +316,26 @@ const SettingsPage = () => {
                   const Icon = setting.icon;
                   return (
                     <div key={setting.key} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors card-hover">
+                      <Switch
+                        checked={notifications[setting.key as keyof typeof notifications]}
+                        onCheckedChange={(checked) => setNotifications({ ...notifications, [setting.key]: checked })}
+                      />
                       <div className="flex items-center gap-3">
+
+                        <div>
+                          <h4 className="font-medium text-gray-900 dark:text-white text-right">{setting.label}</h4>
+                          <p className="text-sm text-gray-500 dark:text-gray-400 text-right">{setting.desc}</p>
+                        </div>
                         <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
                           <Icon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                         </div>
-                        <div>
-                          <h4 className="font-medium text-gray-900 dark:text-white">{setting.label}</h4>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">{setting.desc}</p>
-                        </div>
                       </div>
-                      <Switch
-                        checked={notifications[setting.key as keyof typeof notifications]}
-                        onCheckedChange={(checked) => setNotifications({...notifications, [setting.key]: checked})}
-                      />
+
                     </div>
                   );
                 })}
               </div>
-              <Button 
+              <Button
                 onClick={() => handleSaveSettings('الإشعارات')}
                 className="bg-gradient-to-r from-blue-500 to-red-500 hover:from-blue-600 hover:to-red-600 text-white ripple"
               >
@@ -344,45 +350,48 @@ const SettingsPage = () => {
         <TabsContent value="security">
           <Card className="animate-slide-in-right hover-lift">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="w-5 h-5" />
+              <CardTitle className="flex justify-end items-center gap-2">
                 إعدادات الأمان المتقدمة
+                <Shield className="w-5 h-5" />
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white">المصادقة الثنائية</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">تفعيل طبقة حماية إضافية للحساب</p>
-                    </div>
                     <Switch
                       checked={security.twoFactorAuth}
-                      onCheckedChange={(checked) => setSecurity({...security, twoFactorAuth: checked})}
+                      onCheckedChange={(checked) => setSecurity({ ...security, twoFactorAuth: checked })}
                     />
+                    <div>
+                      <h4 className="font-medium text-gray-900 dark:text-white text-right">المصادقة الثنائية</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 text-right">تفعيل طبقة حماية إضافية للحساب</p>
+                    </div>
+
                   </div>
 
                   <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <h4 className="font-medium text-gray-900 dark:text-white">تشفير البيانات</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">تشفير جميع البيانات الحساسة</p>
-                    </div>
                     <Switch
                       checked={security.dataEncryption}
-                      onCheckedChange={(checked) => setSecurity({...security, dataEncryption: checked})}
+                      onCheckedChange={(checked) => setSecurity({ ...security, dataEncryption: checked })}
                     />
+                    <div>
+                      <h4 className="font-medium text-gray-900 dark:text-white text-right">تشفير البيانات</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 text-right">تشفير جميع البيانات الحساسة</p>
+                    </div>
+
                   </div>
 
                   <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
+                    <Switch
+                      checked={security.auditLogging}
+                      onCheckedChange={(checked) => setSecurity({ ...security, auditLogging: checked })}
+                    />
+                    <div className='text-right'>
                       <h4 className="font-medium text-gray-900 dark:text-white">سجل التدقيق</h4>
                       <p className="text-sm text-gray-500 dark:text-gray-400">تسجيل جميع العمليات الحساسة</p>
                     </div>
-                    <Switch
-                      checked={security.auditLogging}
-                      onCheckedChange={(checked) => setSecurity({...security, auditLogging: checked})}
-                    />
+
                   </div>
                 </div>
 
@@ -393,7 +402,7 @@ const SettingsPage = () => {
                       id="sessionTimeout"
                       type="number"
                       value={security.sessionTimeout}
-                      onChange={(e) => setSecurity({...security, sessionTimeout: parseInt(e.target.value)})}
+                      onChange={(e) => setSecurity({ ...security, sessionTimeout: parseInt(e.target.value) })}
                       className="bg-gray-50 dark:bg-gray-800"
                     />
                   </div>
@@ -403,7 +412,7 @@ const SettingsPage = () => {
                       id="passwordExpiry"
                       type="number"
                       value={security.passwordExpiry}
-                      onChange={(e) => setSecurity({...security, passwordExpiry: parseInt(e.target.value)})}
+                      onChange={(e) => setSecurity({ ...security, passwordExpiry: parseInt(e.target.value) })}
                       className="bg-gray-50 dark:bg-gray-800"
                     />
                   </div>
@@ -413,13 +422,13 @@ const SettingsPage = () => {
                       id="loginAttempts"
                       type="number"
                       value={security.loginAttempts}
-                      onChange={(e) => setSecurity({...security, loginAttempts: parseInt(e.target.value)})}
+                      onChange={(e) => setSecurity({ ...security, loginAttempts: parseInt(e.target.value) })}
                       className="bg-gray-50 dark:bg-gray-800"
                     />
                   </div>
                 </div>
               </div>
-              <Button 
+              <Button
                 onClick={() => handleSaveSettings('الأمان')}
                 className="bg-gradient-to-r from-blue-500 to-red-500 hover:from-blue-600 hover:to-red-600 text-white ripple"
               >
@@ -522,29 +531,23 @@ const SettingsPage = () => {
         <TabsContent value="activity">
           <Card className="animate-slide-in-right hover-lift">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CalendarIcon className="w-5 h-5" />
+              <CardTitle className="flex items-center justify-end gap-2 mb-4">
                 سجل النشاطات
+                <CalendarIcon className="w-5 h-5" />
               </CardTitle>
-              
+
               {/* Search and Filter */}
               <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                <div className="relative flex-1">
-                  <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <Input
-                    placeholder="البحث في السجل..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pr-10 bg-gray-50 dark:bg-gray-800"
-                  />
-                </div>
+
                 <div className="flex gap-2">
+
+
                   <Button
-                    variant={activeFilter === 'all' ? 'default' : 'outline'}
-                    onClick={() => setActiveFilter('all')}
+                    variant={activeFilter === 'warning' ? 'default' : 'outline'}
+                    onClick={() => setActiveFilter('warning')}
                     size="sm"
                   >
-                    الكل
+                    تحذير
                   </Button>
                   <Button
                     variant={activeFilter === 'success' ? 'default' : 'outline'}
@@ -554,29 +557,49 @@ const SettingsPage = () => {
                     نجح
                   </Button>
                   <Button
-                    variant={activeFilter === 'warning' ? 'default' : 'outline'}
-                    onClick={() => setActiveFilter('warning')}
+                    variant={activeFilter === 'all' ? 'default' : 'outline'}
+                    onClick={() => setActiveFilter('all')}
                     size="sm"
                   >
-                    تحذير
+                    الكل
                   </Button>
+                </div>
+
+                <div className="relative flex-1">
+                  <Input
+                    placeholder="البحث في السجل..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pr-10 bg-gray-50 dark:bg-gray-800 text-right"
+                  />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 </div>
               </div>
             </CardHeader>
-            
+
             <CardContent>
               <div className="space-y-3">
                 {filteredActivities.map((activity, index) => (
-                  <div 
-                    key={activity.id} 
+                  <div
+                    key={activity.id}
                     className={`flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors animate-fade-in-up stagger-${index + 1}`}
                   >
+                    <div className="text-left">
+                      <Badge variant={activity.status === 'success' ? 'default' : 'destructive'}>
+                        {activity.status === 'success' ? 'نجح' : activity.status === 'warning' ? 'تحذير' : 'خطأ'}
+                      </Badge>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{activity.time}</p>
+                    </div>
                     <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${
-                        activity.status === 'success' ? 'bg-green-100 dark:bg-green-900/20' :
+                      
+                      <div>
+                        <h4 className="font-medium text-gray-900 dark:text-white">{activity.action}</h4>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">بواسطة: {activity.user}</p>
+                      </div>
+                      <div className={`p-2 rounded-lg ${activity.status === 'success' ? 'bg-green-100 dark:bg-green-900/20' :
                         activity.status === 'warning' ? 'bg-yellow-100 dark:bg-yellow-900/20' :
-                        'bg-red-100 dark:bg-red-900/20'
-                      }`}>
+                          'bg-red-100 dark:bg-red-900/20'
+                        }`}>
                         {activity.status === 'success' ? (
                           <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
                         ) : activity.status === 'warning' ? (
@@ -585,17 +608,8 @@ const SettingsPage = () => {
                           <X className="w-4 h-4 text-red-600 dark:text-red-400" />
                         )}
                       </div>
-                      <div>
-                        <h4 className="font-medium text-gray-900 dark:text-white">{activity.action}</h4>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">بواسطة: {activity.user}</p>
-                      </div>
                     </div>
-                    <div className="text-left">
-                      <Badge variant={activity.status === 'success' ? 'default' : 'destructive'}>
-                        {activity.status === 'success' ? 'نجح' : activity.status === 'warning' ? 'تحذير' : 'خطأ'}
-                      </Badge>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{activity.time}</p>
-                    </div>
+                    
                   </div>
                 ))}
               </div>

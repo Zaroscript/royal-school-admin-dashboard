@@ -1,6 +1,7 @@
 "use client"
 
 import { Cell, Pie, PieChart as RechartsPieChart, ResponsiveContainer, Tooltip } from "recharts"
+import { chartPalettes, getChartColors } from "@/lib/chartColors"
 
 interface PieChartProps {
   data: any[]
@@ -11,18 +12,23 @@ interface PieChartProps {
   showAnimation?: boolean
   showTooltip?: boolean
   height?: number
+  palette?: keyof typeof chartPalettes
 }
 
 export function PieChart({
   data,
   index,
   category,
-  colors = ["#ef4444", "#3b82f6", "#22c55e", "#f97316", "#8b5cf6", "#06b6d4"],
+  colors,
   valueFormatter = (value: number) => value.toString(),
   showAnimation = true,
   showTooltip = true,
   height = 300,
+  palette = 'default',
 }: PieChartProps) {
+  // Use provided colors or fall back to palette
+  const chartColors = colors || chartPalettes[palette];
+
   return (
     <ResponsiveContainer width="100%" height={height}>
       <RechartsPieChart>
@@ -42,7 +48,7 @@ export function PieChart({
           {data.map((entry, index) => (
             <Cell 
               key={`cell-${index}`} 
-              fill={colors[index % colors.length]}
+              fill={chartColors[index % chartColors.length]}
               stroke="hsl(var(--background))"
               strokeWidth={2}
             />

@@ -126,13 +126,16 @@ const StudentsPage = () => {
           <p className="text-gray-600 dark:text-gray-400 mt-1">إدارة بيانات الطلاب وتتبع حالتهم الأكاديمية</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline" className="hover-lift">
+          <Button 
+            variant="outline" 
+            className="bg-transparent border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-500 hover:to-red-500 hover:text-white hover:border-transparent transition-all duration-300 hover:scale-105"
+          >
             <Download className="w-4 h-4 ml-2" />
             تصدير البيانات
           </Button>
           <Button 
             onClick={handleAddStudent} 
-            className="bg-gradient-to-r from-school-blue-500 to-school-red-500 hover:from-school-blue-600 hover:to-school-red-600 text-white hover-scale animate-gradient"
+            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white transition-all duration-300 hover:scale-105"
           >
             <Plus className="w-4 h-4 ml-2" />
             إضافة طالب جديد
@@ -495,7 +498,7 @@ const StudentsPage = () => {
               <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
                 إلغاء
               </Button>
-              <Button onClick={handleSaveStudent} className="bg-gradient-to-r from-school-blue-500 to-school-red-500 hover:from-school-blue-600 hover:to-school-red-600 text-white">
+              <Button onClick={handleSaveStudent} className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
                 {selectedStudent ? 'حفظ التغييرات' : 'إضافة الطالب'}
               </Button>
             </div>

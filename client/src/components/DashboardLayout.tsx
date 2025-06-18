@@ -68,7 +68,7 @@ const DashboardLayout = () => {
       icon: LayoutDashboard,
       badge: null,
       description: 'نظرة عامة على النظام',
-      gradient: 'from-red-500 to-orange-500',
+      gradient: 'from-blue-600 to-purple-600',
       category: 'main'
     },
     {
@@ -77,7 +77,7 @@ const DashboardLayout = () => {
       icon: Users,
       badge: '125',
       description: 'إدارة بيانات الطلاب',
-      gradient: 'from-blue-500 to-cyan-500',
+      gradient: 'from-blue-500 to-indigo-500',
       category: 'academic'
     },
     {
@@ -86,7 +86,7 @@ const DashboardLayout = () => {
       icon: GraduationCap,
       badge: '45',
       description: 'إدارة بيانات المعلمين',
-      gradient: 'from-purple-500 to-pink-500',
+      gradient: 'from-indigo-500 to-purple-500',
       category: 'academic'
     },
     {
@@ -95,7 +95,7 @@ const DashboardLayout = () => {
       icon: BookOpen,
       badge: '32',
       description: 'إدارة المواد والمناهج',
-      gradient: 'from-green-500 to-emerald-500',
+      gradient: 'from-purple-500 to-blue-500',
       category: 'academic'
     },
     {
@@ -104,7 +104,7 @@ const DashboardLayout = () => {
       icon: Calendar,
       badge: null,
       description: 'إدارة الجداول الدراسية',
-      gradient: 'from-orange-500 to-red-500',
+      gradient: 'from-blue-600 to-cyan-500',
       category: 'academic'
     },
     {
@@ -113,7 +113,7 @@ const DashboardLayout = () => {
       icon: ClipboardList,
       badge: 'اليوم',
       description: 'تتبع حضور الطلاب',
-      gradient: 'from-indigo-500 to-blue-500',
+      gradient: 'from-cyan-500 to-blue-500',
       category: 'academic'
     },
     {
@@ -122,7 +122,7 @@ const DashboardLayout = () => {
       icon: Award,
       badge: 'قريب',
       description: 'إدارة الامتحانات والنتائج',
-      gradient: 'from-yellow-500 to-orange-500',
+      gradient: 'from-blue-500 to-purple-600',
       category: 'academic'
     },
     {
@@ -131,7 +131,7 @@ const DashboardLayout = () => {
       icon: TrendingUp,
       badge: null,
       description: 'إدارة درجات الطلاب',
-      gradient: 'from-teal-500 to-cyan-500',
+      gradient: 'from-purple-600 to-blue-500',
       category: 'academic'
     },
     {
@@ -140,7 +140,7 @@ const DashboardLayout = () => {
       icon: Library,
       badge: '1.2K',
       description: 'إدارة المكتبة والكتب',
-      gradient: 'from-rose-500 to-pink-500',
+      gradient: 'from-blue-500 to-indigo-600',
       category: 'services'
     },
     {
@@ -149,7 +149,7 @@ const DashboardLayout = () => {
       icon: Activity,
       badge: '5',
       description: 'إدارة الأنشطة المدرسية',
-      gradient: 'from-violet-500 to-purple-500',
+      gradient: 'from-indigo-600 to-purple-500',
       category: 'services'
     },
     {
@@ -158,7 +158,7 @@ const DashboardLayout = () => {
       icon: FileText,
       badge: '250',
       description: 'إدارة الوثائق والملفات',
-      gradient: 'from-slate-500 to-gray-500',
+      gradient: 'from-purple-500 to-blue-600',
       category: 'services'
     },
     {
@@ -167,7 +167,7 @@ const DashboardLayout = () => {
       icon: CreditCard,
       badge: 'محدث',
       description: 'إدارة الشؤون المالية',
-      gradient: 'from-emerald-500 to-green-500',
+      gradient: 'from-blue-600 to-purple-500',
       category: 'finance'
     },
     {
@@ -176,7 +176,7 @@ const DashboardLayout = () => {
       icon: BarChart3,
       badge: null,
       description: 'عرض وتحليل التقارير',
-      gradient: 'from-amber-500 to-yellow-500',
+      gradient: 'from-purple-500 to-indigo-500',
       category: 'reports'
     },
     {
@@ -185,7 +185,7 @@ const DashboardLayout = () => {
       icon: School,
       badge: '12',
       description: 'إدارة شؤون الطلاب',
-      gradient: 'from-red-500 to-rose-500',
+      gradient: 'from-indigo-500 to-blue-600',
       category: 'services'
     },
     {
@@ -194,7 +194,7 @@ const DashboardLayout = () => {
       icon: Settings,
       badge: null,
       description: 'إعدادات النظام',
-      gradient: 'from-gray-500 to-slate-500',
+      gradient: 'from-blue-500 to-purple-600',
       category: 'system'
     }
   ];
@@ -238,10 +238,10 @@ const DashboardLayout = () => {
       <aside className={`fixed inset-y-0 right-0 z-50 w-72 transform transition-all duration-300 ease-in-out ${
           sidebarOpen ? 'translate-x-0' : 'translate-x-full'
       } lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen`}>
-        <div className="flex h-full flex-col bg-card/80 backdrop-blur-xl border-l border-border/50 royal-sidebar shadow-2xl">
+        <div className="flex h-full flex-col bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl border-l border-slate-200 dark:border-slate-700 shadow-2xl">
           {/* Sidebar Header */}
-          <div className="bg-gradient-to-br from-red-500 via-blue-500 to-green-500 p-6 royal-sidebar-header relative overflow-hidden flex-shrink-0">
-            <div className="absolute inset-0 bg-gradient-to-br from-red-500/20 via-blue-500/20 to-green-500/20 animate-pulse-slow"></div>
+          <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 p-6 relative overflow-hidden flex-shrink-0">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-blue-600/20 animate-pulse-slow"></div>
             <div className="relative z-10 flex items-center space-x-3 space-x-reverse">
               <div className="relative group">
                 <img 
@@ -256,22 +256,22 @@ const DashboardLayout = () => {
                   Royal School
                 </h1>
                 <p className="text-xs text-white/80 animate-slide-in-left stagger-1">
-                  نظام إدارة المدرسة الملكية
+                  نظام إدارة مدرسة رويال
                 </p>
               </div>
             </div>
           </div>
 
           {/* Search Bar */}
-          <div className="p-4 border-b border-border/50 flex-shrink-0">
+          <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex-shrink-0">
             <div className="relative">
-              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
               <input
                 type="text"
                 placeholder="البحث في القائمة..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pr-10 pl-4 py-2 text-sm bg-muted/50 border border-border/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300"
+                className="w-full pr-10 pl-4 py-2 text-sm bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300"
               />
             </div>
           </div>
@@ -281,7 +281,7 @@ const DashboardLayout = () => {
             {Object.entries(groupedNavigation).map(([category, items]) => (
               <div key={category} className="space-y-2">
                 <div className="px-3 py-2">
-                  <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <h3 className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                     {categories[category]}
                   </h3>
                 </div>
@@ -296,8 +296,8 @@ const DashboardLayout = () => {
                       }}
                       className={`w-full flex items-center space-x-3 space-x-reverse px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 group focus:outline-none focus:ring-0 focus:border-0 hover-lift animate-slide-in-left nav-item ${
                         isActive(item.href)
-                          ? 'bg-gradient-to-r from-red-500 to-blue-500 text-white shadow-lg'
-                          : 'text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground'
+                          ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                          : 'text-slate-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400'
                       }`}
                       style={{ animationDelay: `${index * 0.05}s` }}
                     >
@@ -315,7 +315,7 @@ const DashboardLayout = () => {
                             <span className={`px-2 py-1 text-xs rounded-full font-medium ${
                               isActive(item.href)
                                 ? 'bg-white/20 text-white'
-                                : 'bg-primary/10 text-primary'
+                                : 'bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
                             }`}>
                               {item.badge}
                             </span>
@@ -331,20 +331,20 @@ const DashboardLayout = () => {
           </nav>
 
           {/* Sidebar Footer */}
-          <div className="p-4 border-t border-border/50 space-y-3 flex-shrink-0">
+          <div className="p-4 border-t border-slate-200 dark:border-slate-700 space-y-3 flex-shrink-0">
             {/* User Profile */}
-            <div className="flex items-center space-x-3 space-x-reverse p-3 rounded-xl bg-muted/30 hover:bg-muted/50 transition-all duration-300">
+            <div className="flex items-center space-x-3 space-x-reverse p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300">
               <div className="relative">
                 <img
                   src={user?.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face"}
                   alt="Profile"
-                  className="h-10 w-10 rounded-full border-2 border-primary/20 hover-scale"
+                  className="h-10 w-10 rounded-full border-2 border-blue-200 dark:border-blue-600 hover-scale"
                 />
-                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-background animate-pulse"></div>
+                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse"></div>
               </div>
               <div className="flex-1">
-                <p className="text-sm font-medium text-foreground">{user?.name || 'المستخدم'}</p>
-                <p className="text-xs text-muted-foreground">{user?.role || 'مدير النظام'}</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-white">{user?.name || 'المستخدم'}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400">{user?.role || 'مدير النظام'}</p>
               </div>
             </div>
 
@@ -352,12 +352,12 @@ const DashboardLayout = () => {
             <div className="flex items-center space-x-2 space-x-reverse">
               <button
                 onClick={toggleTheme}
-                className="flex-1 flex items-center justify-center space-x-2 space-x-reverse px-3 py-2 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted/50 transition-all duration-300 hover-lift"
+                className="flex-1 flex items-center justify-center space-x-2 space-x-reverse px-3 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 hover-lift"
               >
                 {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                 <span>{isDark ? 'الوضع النهاري' : 'الوضع الليلي'}</span>
               </button>
-              <button className="p-2 text-muted-foreground hover:bg-muted/50 rounded-lg transition-all duration-300 hover-lift">
+              <button className="p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-all duration-300 hover-lift">
                 <Volume2 className="h-4 w-4" />
               </button>
             </div>
@@ -365,7 +365,7 @@ const DashboardLayout = () => {
             {/* Logout Button */}
             <button
               onClick={handleLogout}
-              className="w-full flex items-center space-x-3 space-x-reverse px-4 py-3 text-sm font-medium rounded-xl text-red-500 hover:bg-red-500/10 transition-all duration-300 hover-lift"
+              className="w-full flex items-center space-x-3 space-x-reverse px-4 py-3 text-sm font-medium rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-300 hover-lift"
             >
               <LogOut className="h-5 w-5" />
               <span>تسجيل الخروج</span>

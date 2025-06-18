@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export type UserRole = 'admin' | 'moderator';
@@ -52,14 +51,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       {
         id: '1',
         name: 'أحمد محمد',
-        email: 'admin@school.com',
+        email: 'admin@royal.edu',
         role: 'admin' as UserRole,
         avatar: '/api/placeholder/40/40'
       },
       {
         id: '2',
         name: 'فاطمة السيد',
-        email: 'moderator@school.com',
+        email: 'coordinator@royal.edu',
         role: 'moderator' as UserRole,
         avatar: '/api/placeholder/40/40'
       }

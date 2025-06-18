@@ -1,6 +1,7 @@
 "use client"
 
 import { Area, AreaChart as RechartsAreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+import { chartPalettes, getChartColors } from "@/lib/chartColors"
 
 interface AreaChartProps {
   data: any[]
@@ -16,13 +17,14 @@ interface AreaChartProps {
   showTooltip?: boolean
   showGrid?: boolean
   height?: number
+  palette?: keyof typeof chartPalettes
 }
 
 export function AreaChart({
   data,
   index,
   categories,
-  colors = ["#ef4444", "#3b82f6", "#22c55e", "#f97316"],
+  colors,
   valueFormatter = (value: number) => value.toString(),
   startEndOnly = false,
   showXAxis = true,
@@ -32,7 +34,14 @@ export function AreaChart({
   showTooltip = true,
   showGrid = true,
   height = 300,
+  palette = 'default',
 }: AreaChartProps) {
+  // Use provided colors or fall back to palette
+  const chartColors = colors || chartPalettes[palette];
+  
+  // Generate gradient IDs for each color
+  const generateGradientId = (color: string) => `gradient-${color.replace('#', '')}`;
+
   return (
     <ResponsiveContainer width="100%" height={height}>
       <RechartsAreaChart
@@ -46,22 +55,19 @@ export function AreaChart({
       >
         {showGrid && (
           <defs>
-            <linearGradient id="colorRed" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3}/>
-              <stop offset="95%" stopColor="#ef4444" stopOpacity={0.1}/>
-            </linearGradient>
-            <linearGradient id="colorBlue" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-              <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1}/>
-            </linearGradient>
-            <linearGradient id="colorGreen" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3}/>
-              <stop offset="95%" stopColor="#22c55e" stopOpacity={0.1}/>
-            </linearGradient>
-            <linearGradient id="colorOrange" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#f97316" stopOpacity={0.3}/>
-              <stop offset="95%" stopColor="#f97316" stopOpacity={0.1}/>
-            </linearGradient>
+            {chartColors.map((color, index) => (
+              <linearGradient 
+                key={index}
+                id={generateGradientId(color)} 
+                x1="0" 
+                y1="0" 
+                x2="0" 
+                y2="1"
+              >
+                <stop offset="5%" stopColor={color} stopOpacity={0.3}/>
+                <stop offset="95%" stopColor={color} stopOpacity={0.1}/>
+              </linearGradient>
+            ))}
           </defs>
         )}
         {showXAxis && (
@@ -105,7 +111,7 @@ export function AreaChart({
                           <span className="text-[0.70rem] uppercase text-muted-foreground">
                             {payload.name}
                           </span>
-                          <span className="font-bold" style={{ color: colors[index % colors.length] }}>
+                          <span className="font-bold" style={{ color: chartColors[index % chartColors.length] }}>
                             {valueFormatter(payload.value)}
                           </span>
                         </div>
@@ -123,9 +129,9 @@ export function AreaChart({
             key={category}
             type="monotone"
             dataKey={category}
-            stroke={colors[index % colors.length]}
+            stroke={chartColors[index % chartColors.length]}
             strokeWidth={2}
-            fill={showGrid ? `url(#color${colors[index % colors.length].replace('#', '')})` : colors[index % colors.length]}
+            fill={showGrid ? `url(#${generateGradientId(chartColors[index % chartColors.length])})` : chartColors[index % chartColors.length]}
             fillOpacity={0.1}
             isAnimationActive={showAnimation}
             animationDuration={1000}

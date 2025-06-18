@@ -12,25 +12,33 @@ import {
   FileText,
   Download,
   Calendar as CalendarIcon,
-  Filter
+  Filter,
+  BookOpen,
+  Award,
+  Target
 } from 'lucide-react';
+import { getChartColors, chartPalettes } from '@/lib/chartColors';
 
 const ReportsPage = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('monthly');
 
-  // Sample data for charts
+  // Enhanced data for charts with better structure
   const attendanceData = [
     { name: 'سبتمبر', students: 92, teachers: 98 },
     { name: 'أكتوبر', students: 89, teachers: 95 },
     { name: 'نوفمبر', students: 94, teachers: 97 },
     { name: 'ديسمبر', students: 91, teachers: 99 },
+    { name: 'يناير', students: 93, teachers: 96 },
+    { name: 'فبراير', students: 90, teachers: 94 },
+    { name: 'مارس', students: 95, teachers: 98 },
+    { name: 'أبريل', students: 88, teachers: 92 },
   ];
 
   const gradeDistribution = [
-    { name: 'ممتاز', value: 45, color: 'hsl(142 76% 36%)' },
-    { name: 'جيد جداً', value: 78, color: 'hsl(217 91% 60%)' },
-    { name: 'جيد', value: 52, color: 'hsl(45 93% 47%)' },
-    { name: 'مقبول', value: 23, color: 'hsl(0 84% 60%)' },
+    { name: 'ممتاز', value: 45, color: getChartColors.performance('excellent') },
+    { name: 'جيد جداً', value: 78, color: getChartColors.performance('good') },
+    { name: 'جيد', value: 52, color: getChartColors.performance('average') },
+    { name: 'مقبول', value: 23, color: getChartColors.performance('poor') },
   ];
 
   const performanceData = [
@@ -40,38 +48,33 @@ const ReportsPage = () => {
     { name: 'الإنجليزية', value: 76 },
     { name: 'التاريخ', value: 88 },
     { name: 'الجغرافيا', value: 82 },
+    { name: 'الفيزياء', value: 79 },
+    { name: 'الكيمياء', value: 81 },
   ];
 
-  const attendanceCategories = [
-    {
-      name: "الطلاب",
-      key: "students",
-      color: "hsl(217 91% 60%)",
-      gradientFrom: "hsl(217 91% 60%)",
-      gradientTo: "hsl(217 91% 60% / 0)"
-    },
-    {
-      name: "المعلمين",
-      key: "teachers",
-      color: "hsl(142 76% 36%)",
-      gradientFrom: "hsl(142 76% 36%)",
-      gradientTo: "hsl(142 76% 36% / 0)"
-    }
+  const studentEnrollment = [
+    { name: 'الصف الأول', value: 156 },
+    { name: 'الصف الثاني', value: 142 },
+    { name: 'الصف الثالث', value: 138 },
+    { name: 'الصف الرابع', value: 145 },
+    { name: 'الصف الخامس', value: 132 },
+    { name: 'الصف السادس', value: 128 },
   ];
 
-  const performanceCategories = [
-    {
-      name: "الدرجات",
-      key: "value",
-      color: "hsl(217 91% 60%)"
-    }
+  const teacherPerformance = [
+    { name: 'أحمد محمد', value: 94 },
+    { name: 'فاطمة علي', value: 88 },
+    { name: 'محمد حسن', value: 91 },
+    { name: 'عائشة أحمد', value: 86 },
+    { name: 'علي محمود', value: 89 },
+    { name: 'خديجة سعيد', value: 92 },
   ];
 
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           التقارير والإحصائيات
         </h1>
         <div className="flex gap-3">
@@ -79,7 +82,7 @@ const ReportsPage = () => {
             <Filter className="w-4 h-4 ml-2" />
             تصفية
           </Button>
-          <Button className="bg-gradient-to-r from-school-blue-500 to-school-red-500 hover:from-school-blue-600 hover:to-school-red-600">
+          <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
             <Download className="w-4 h-4 ml-2" />
             تصدير التقرير
           </Button>
@@ -100,7 +103,7 @@ const ReportsPage = () => {
                 key={period.key}
                 variant={selectedPeriod === period.key ? 'default' : 'outline'}
                 onClick={() => setSelectedPeriod(period.key)}
-                className={selectedPeriod === period.key ? 'bg-gradient-to-r from-school-blue-500 to-school-red-500' : ''}
+                className={selectedPeriod === period.key ? 'bg-gradient-to-r from-blue-600 to-purple-600' : ''}
               >
                 {period.label}
               </Button>
@@ -186,9 +189,15 @@ const ReportsPage = () => {
           <CardContent>
             <AreaChart
               data={attendanceData}
-              categories={attendanceCategories}
-              yAxisFormatter={(value) => `${value}%`}
-              tooltipFormatter={(value) => `${value}%`}
+              index="name"
+              categories={["students", "teachers"]}
+              colors={[
+                getChartColors.academic('students'),
+                getChartColors.academic('teachers')
+              ]}
+              valueFormatter={(value) => `${value}%`}
+              height={350}
+              palette="academic"
             />
           </CardContent>
         </Card>
@@ -197,14 +206,19 @@ const ReportsPage = () => {
         <Card className="hover:shadow-lg transition-all duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="w-5 h-5" />
+              <Award className="w-5 h-5" />
               توزيع الدرجات
             </CardTitle>
           </CardHeader>
           <CardContent>
             <PieChart
               data={gradeDistribution}
+              index="name"
+              category="value"
+              colors={gradeDistribution.map(item => item.color)}
               valueFormatter={(value) => `${value}%`}
+              height={350}
+              palette="performance"
             />
           </CardContent>
         </Card>
@@ -213,16 +227,64 @@ const ReportsPage = () => {
         <Card className="lg:col-span-2 hover:shadow-lg transition-all duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="w-5 h-5" />
+              <BookOpen className="w-5 h-5" />
               أداء المواد الدراسية
             </CardTitle>
           </CardHeader>
           <CardContent>
             <BarChart
               data={performanceData}
-              categories={performanceCategories}
-              yAxisFormatter={(value) => `${value}%`}
-              tooltipFormatter={(value) => `${value}%`}
+              index="name"
+              categories={["value"]}
+              colors={[getChartColors.academic('performance')]}
+              valueFormatter={(value) => `${value}%`}
+              height={300}
+              palette="academic"
+            />
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Additional Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Student Enrollment by Grade */}
+        <Card className="hover:shadow-lg transition-all duration-300">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="w-5 h-5" />
+              توزيع الطلاب حسب الصف
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <BarChart
+              data={studentEnrollment}
+              index="name"
+              categories={["value"]}
+              colors={[getChartColors.academic('students')]}
+              valueFormatter={(value) => value.toString()}
+              height={300}
+              palette="academic"
+            />
+          </CardContent>
+        </Card>
+
+        {/* Teacher Performance */}
+        <Card className="hover:shadow-lg transition-all duration-300">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Target className="w-5 h-5" />
+              أداء المعلمين
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <BarChart
+              data={teacherPerformance}
+              index="name"
+              categories={["value"]}
+              colors={[getChartColors.academic('teachers')]}
+              valueFormatter={(value) => `${value}%`}
+              height={300}
+              palette="academic"
             />
           </CardContent>
         </Card>
@@ -243,6 +305,8 @@ const ReportsPage = () => {
               { name: 'تقرير الدرجات النهائية', date: '2024-01-14', type: 'grades', status: 'completed' },
               { name: 'تقرير أداء المعلمين', date: '2024-01-13', type: 'performance', status: 'pending' },
               { name: 'تقرير الميزانية', date: '2024-01-12', type: 'financial', status: 'completed' },
+              { name: 'تقرير الأنشطة الطلابية', date: '2024-01-11', type: 'activities', status: 'completed' },
+              { name: 'تقرير الصيانة', date: '2024-01-10', type: 'maintenance', status: 'in-progress' },
             ].map((report, index) => (
               <div key={index} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                 <div className="flex items-center gap-3">
@@ -253,8 +317,17 @@ const ReportsPage = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Badge variant={report.status === 'completed' ? 'default' : 'secondary'}>
-                    {report.status === 'completed' ? 'مكتمل' : 'في الانتظار'}
+                  <Badge 
+                    variant={report.status === 'completed' ? 'default' : report.status === 'pending' ? 'secondary' : 'outline'}
+                    className={
+                      report.status === 'completed' 
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                        : report.status === 'pending'
+                        ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
+                        : 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
+                    }
+                  >
+                    {report.status === 'completed' ? 'مكتمل' : report.status === 'pending' ? 'في الانتظار' : 'قيد التنفيذ'}
                   </Badge>
                   <Button size="sm" variant="outline">
                     <Download className="w-4 h-4" />

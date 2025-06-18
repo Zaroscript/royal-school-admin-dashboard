@@ -1,6 +1,7 @@
 "use client"
 
 import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+import { chartPalettes, getChartColors } from "@/lib/chartColors"
 
 interface BarChartProps {
   data: any[]
@@ -16,13 +17,14 @@ interface BarChartProps {
   showTooltip?: boolean
   showGrid?: boolean
   height?: number
+  palette?: keyof typeof chartPalettes
 }
 
 export function BarChart({
   data,
   index,
   categories,
-  colors = ["#ef4444", "#3b82f6", "#22c55e", "#f97316"],
+  colors,
   valueFormatter = (value: number) => value.toString(),
   startEndOnly = false,
   showXAxis = true,
@@ -32,7 +34,11 @@ export function BarChart({
   showTooltip = true,
   showGrid = true,
   height = 300,
+  palette = 'default',
 }: BarChartProps) {
+  // Use provided colors or fall back to palette
+  const chartColors = colors || chartPalettes[palette];
+
   return (
     <ResponsiveContainer width="100%" height={height}>
       <RechartsBarChart
@@ -85,7 +91,7 @@ export function BarChart({
                           <span className="text-[0.70rem] uppercase text-muted-foreground">
                             {payload.name}
                           </span>
-                          <span className="font-bold" style={{ color: colors[index % colors.length] }}>
+                          <span className="font-bold" style={{ color: chartColors[index % chartColors.length] }}>
                             {valueFormatter(payload.value)}
                           </span>
                         </div>
@@ -102,7 +108,7 @@ export function BarChart({
           <Bar
             key={category}
             dataKey={category}
-            fill={colors[index % colors.length]}
+            fill={chartColors[index % chartColors.length]}
             radius={[4, 4, 0, 0]}
             isAnimationActive={showAnimation}
             animationDuration={1000}

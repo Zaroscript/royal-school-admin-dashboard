@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Card,
   CardContent,
@@ -45,7 +45,65 @@ import {
   Download,
   Edit,
   ArrowLeft,
-  Share2
+  Share2,
+  Activity,
+  Zap,
+  Shield,
+  Trophy,
+  Bookmark,
+  MessageSquare,
+  Settings,
+  Eye,
+  Plus,
+  MoreVertical,
+  Heart,
+  ThumbsUp,
+  TrendingDown,
+  Minus,
+  Percent,
+  Hash,
+  Calculator,
+  ClipboardList,
+  FileCheck,
+  FileX,
+  FilePlus,
+  FileMinus,
+  FileEdit,
+  FileSearch,
+  FileBarChart,
+  FileSpreadsheet,
+  FileImage,
+  FileVideo,
+  FileAudio,
+  FileArchive,
+  FileCode,
+  FileJson,
+  FileTextIcon,
+  FileType,
+  FileDigit,
+  FileSymlink,
+  FileHeart,
+  FileWarning,
+  FileQuestion,
+  FileLock,
+  FileKey,
+  UserPlus,
+  Cpu,
+  HardDrive,
+  Globe,
+  Wifi,
+  Battery,
+  Volume2,
+  VolumeX,
+  Moon,
+  Sunrise,
+  Sunset,
+  Clock4,
+  CalendarDays,
+  PieChart,
+  LineChart,
+  AreaChart,
+  ScatterChart
 } from 'lucide-react';
 
 interface TeacherProfile {
@@ -164,133 +222,263 @@ const mockTeacherProfile: TeacherProfile = {
 
 const TeacherProfilePage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
   const teacher = mockTeacherProfile; // In a real app, fetch based on ID
 
   const getStatusColor = (status: TeacherProfile['status']) => {
-    return status === 'active' ? 'bg-green-500' : 'bg-gray-400';
+    return status === 'active' ? 'bg-emerald-500' : 'bg-slate-400';
   };
 
+  const quickStats = [
+    {
+      title: 'إجمالي الطلاب',
+      value: teacher.studentsCount.toString(),
+      change: '+12%',
+      changeType: 'increase',
+      icon: Users,
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-500/10',
+      gradient: 'from-blue-500/20 to-blue-500/5'
+    },
+    {
+      title: 'سنوات الخبرة',
+      value: `${teacher.experience} سنوات`,
+      change: '+2',
+      changeType: 'increase',
+      icon: BookOpen,
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-500/10',
+      gradient: 'from-purple-500/20 to-purple-500/5'
+    },
+    {
+      title: 'معدل الإنجاز',
+      value: `${teacher.completionRate}%`,
+      change: '+5%',
+      changeType: 'increase',
+      icon: Target,
+      color: 'text-indigo-600',
+      bgColor: 'bg-indigo-500/10',
+      gradient: 'from-indigo-500/20 to-indigo-500/5'
+    },
+    {
+      title: 'الحصص القادمة',
+      value: teacher.upcomingClasses.toString(),
+      change: 'اليوم',
+      changeType: 'neutral',
+      icon: Clock,
+      color: 'text-cyan-600',
+      bgColor: 'bg-cyan-500/10',
+      gradient: 'from-cyan-500/20 to-cyan-500/5'
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50/50 dark:bg-gray-900/50">
-      {/* Hero Section */}
-      <div className="relative h-[250px] lg:h-[300px] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600">
-          <div className="absolute inset-0 bg-[url('/assets/img/grid-pattern.svg')] opacity-20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent" />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+      {/* Enhanced Hero Section */}
+      <div className="relative h-[280px] lg:h-[320px] overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700">
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent" />
+        </div>
+        
+        {/* Back Button */}
+        <div className="absolute top-6 right-6 z-20">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate('/teachers')}
+            className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30"
+          >
+            <ArrowLeft className="h-4 w-4 ml-2" />
+            العودة للمعلمين
+          </Button>
+        </div>
+
+        {/* Hero Content */}
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <div className="text-center text-white">
+            <h1 className="text-4xl lg:text-5xl font-bold mb-4 animate-slide-in-bottom">
+              ملف المعلم الشخصي
+            </h1>
+            <p className="text-xl text-white/90 animate-slide-in-bottom stagger-1">
+              نظرة شاملة على أداء وإنجازات المعلم
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 lg:px-8 -mt-32 relative z-10 pb-8">
-        <div className="grid grid-cols-12 gap-6">
-          {/* Sidebar */}
-          <div className="col-span-12 lg:col-span-4 space-y-6">
-            {/* Profile Card */}
-            <Card className="border-0 shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex flex-col items-center text-center">
-                  <div className="relative">
-                    <Avatar className="w-32 h-32 border-4 border-white dark:border-gray-800 shadow-xl">
-                      <AvatarImage src={teacher.avatar} alt={teacher.name} />
-                      <AvatarFallback className="text-3xl">{teacher.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <span 
-                      className={`absolute bottom-3 right-3 w-5 h-5 rounded-full border-4 border-white 
-                      ${getStatusColor(teacher.status)} ${teacher.status === 'active' ? 'animate-pulse' : ''}`}
-                    />
+      <div className="container mx-auto px-4 lg:px-8 -mt-24 relative z-10 pb-8">
+        {/* Enhanced Quick Stats - Full Width */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          {quickStats.map((stat, index) => {
+            const Icon = stat.icon;
+            return (
+              <Card 
+                key={index} 
+                className="border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">{stat.title}</p>
+                      <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{stat.value}</h3>
+                      <div className="flex items-center gap-1 mt-2">
+                        {stat.changeType === 'increase' ? (
+                          <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+                            <TrendingUp className="h-3 w-3" />
+                            <span className="text-xs font-medium">{stat.change}</span>
+                          </div>
+                        ) : stat.changeType === 'decrease' ? (
+                          <div className="flex items-center gap-1 text-red-600 dark:text-red-400">
+                            <TrendingDown className="h-3 w-3" />
+                            <span className="text-xs font-medium">{stat.change}</span>
+                          </div>
+                        ) : (
+                          <span className="text-xs text-slate-500 dark:text-slate-400">{stat.change}</span>
+                        )}
+                      </div>
+                    </div>
+                    <div className={`p-4 rounded-xl bg-gradient-to-br ${stat.gradient}`}>
+                      <Icon className={`w-6 h-6 ${stat.color}`} />
+                    </div>
                   </div>
-                  <h2 className="mt-4 text-2xl font-bold text-gray-900 dark:text-gray-100">{teacher.name}</h2>
-                  <p className="text-gray-500 dark:text-gray-400">مدرس {teacher.subject}</p>
-                  <div className="flex items-center gap-1 mt-2">
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+
+        <div className="grid grid-cols-12 gap-6">
+          {/* Sidebar - Profile and Skills Cards */}
+          <div className="col-span-12 lg:col-span-5 space-y-6">
+            {/* Enhanced Profile Card */}
+            <Card className="border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl">
+              <CardContent className="p-8">
+                <div className="flex flex-col items-center text-center">
+                  <div className="relative mb-6">
+                    <div className="relative">
+                      <Avatar className="w-36 h-36 border-4 border-white dark:border-slate-700 shadow-2xl">
+                        <AvatarImage src={teacher.avatar} alt={teacher.name} />
+                        <AvatarFallback className="text-4xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">
+                          {teacher.name.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span 
+                        className={`absolute bottom-4 right-4 w-6 h-6 rounded-full border-4 border-white dark:border-slate-700 
+                        ${getStatusColor(teacher.status)} ${teacher.status === 'active' ? 'animate-pulse' : ''}`}
+                      />
+                    </div>
+                  </div>
+                  
+                  <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">{teacher.name}</h2>
+                  <p className="text-slate-600 dark:text-slate-400 text-lg mb-4">مدرس {teacher.subject}</p>
+                  
+                  {/* Rating */}
+                  <div className="flex items-center gap-1 mb-4">
                     {[...Array(5)].map((_, i) => (
                       <Star 
                         key={i} 
-                        className={`w-4 h-4 ${i < Math.floor(teacher.rating) ? 
-                          'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
+                        className={`w-5 h-5 ${i < Math.floor(teacher.rating) ? 
+                          'text-amber-400 fill-amber-400' : 'text-slate-300'}`} 
                       />
                     ))}
-                    <span className="ml-2 text-sm font-medium">{teacher.rating}/5.0</span>
+                    <span className="mr-3 text-lg font-semibold text-slate-700 dark:text-slate-300">{teacher.rating}/5.0</span>
                   </div>
+
+                  {/* Status Badge */}
+                  <Badge 
+                    variant={teacher.status === 'active' ? 'default' : 'secondary'}
+                    className={`mb-6 ${teacher.status === 'active' ? 'bg-emerald-500 hover:bg-emerald-600' : ''}`}
+                  >
+                    {teacher.status === 'active' ? 'نشط' : 'غير نشط'}
+                  </Badge>
                 </div>
 
-                <Separator className="my-6" />
+                <Separator className="my-8" />
 
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-50 dark:bg-blue-900/50 rounded-lg">
+                {/* Contact Information */}
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
+                    <div className="p-3 bg-blue-500/10 rounded-lg flex-shrink-0">
                       <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                     </div>
-                    <div className="flex-1 text-right">
-                      <p className="text-sm text-gray-500 dark:text-gray-400">البريد الإلكتروني</p>
-                      <p className="font-medium">{teacher.email}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-slate-500 dark:text-slate-400 text-right">البريد الإلكتروني</p>
+                      <p className="font-medium text-slate-900 dark:text-white text-right break-all">{teacher.email}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-green-50 dark:bg-green-900/50 rounded-lg">
-                      <Phone className="w-5 h-5 text-green-600 dark:text-green-400" />
+                  
+                  <div className="flex items-center gap-4 p-4 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 transition-colors">
+                    <div className="p-3 bg-emerald-500/10 rounded-lg flex-shrink-0">
+                      <Phone className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                     </div>
-                    <div className="flex-1 text-right">
-                      <p className="text-sm text-gray-500 dark:text-gray-400">رقم الهاتف</p>
-                      <p className="font-medium">{teacher.phone}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-slate-500 dark:text-slate-400 text-right">رقم الهاتف</p>
+                      <p className="font-medium text-slate-900 dark:text-white text-right">{teacher.phone}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-purple-50 dark:bg-purple-900/50 rounded-lg">
+                  
+                  <div className="flex items-center gap-4 p-4 rounded-xl bg-purple-50 dark:bg-purple-900/20 hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors">
+                    <div className="p-3 bg-purple-500/10 rounded-lg flex-shrink-0">
                       <MapPin className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                     </div>
-                    <div className="flex-1 text-right">
-                      <p className="text-sm text-gray-500 dark:text-gray-400">العنوان</p>
-                      <p className="font-medium">{teacher.address}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-slate-500 dark:text-slate-400 text-right">العنوان</p>
+                      <p className="font-medium text-slate-900 dark:text-white text-right">{teacher.address}</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-6 flex flex-col gap-3">
-                  <Button className="w-full" size="lg">
-                    <CalendarIcon className="w-4 h-4 mr-2" />
+                {/* Action Buttons */}
+                <div className="mt-8 space-y-3">
+                  <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300">
+                    <CalendarIcon className="w-4 h-4 ml-2" />
                     جدول الحصص
                   </Button>
-                  <Button variant="outline" className="w-full" size="lg">
-                    <Download className="w-4 h-4 mr-2" />
+                  <Button variant="outline" className="w-full hover:bg-slate-50 dark:hover:bg-slate-700">
+                    <Download className="w-4 h-4 ml-2" />
                     تحميل السيرة الذاتية
                   </Button>
                 </div>
 
-                <div className="flex items-center text-sm text-gray-500 mt-4">
-                  <CalendarIcon className="w-4 h-4 mr-2" />
+                <div className="flex items-center justify-center text-sm text-slate-500 dark:text-slate-400 mt-6">
+                  <CalendarIcon className="w-4 h-4 ml-2" />
                   تاريخ الانضمام: {teacher.joinDate}
                 </div>
               </CardContent>
             </Card>
 
-            {/* Skills & Certifications Card */}
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle>المهارات والشهادات</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">التخصصات</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {teacher.specializations.map((spec, index) => (
-                        <Badge key={index} variant="secondary" className="px-3 py-1">
-                          {spec}
-                        </Badge>
-                      ))}
-                    </div>
+            {/* Enhanced Skills & Certifications Card */}
+            <Card className="border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2">
+                  <div className="p-2 bg-indigo-500/10 rounded-lg">
+                    <Award className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                   </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">الشهادات</h4>
-                    <div className="space-y-2">
-                      {teacher.certifications.map((cert, index) => (
-                        <div key={index} className="flex items-start gap-2">
-                          <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
-                          <span className="text-sm">{cert}</span>
-                        </div>
-                      ))}
-                    </div>
+                  المهارات والشهادات
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-3 text-right">التخصصات</h4>
+                  <div className="flex flex-wrap gap-2 justify-end">
+                    {teacher.specializations.map((spec, index) => (
+                      <Badge key={index} variant="secondary" className="px-3 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300">
+                        {spec}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-3 text-right">الشهادات</h4>
+                  <div className="space-y-3">
+                    {teacher.certifications.map((cert, index) => (
+                      <div key={index} className="flex items-start gap-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
+                        <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm text-slate-700 dark:text-slate-300 text-right">{cert}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </CardContent>
@@ -298,108 +486,70 @@ const TeacherProfilePage = () => {
           </div>
 
           {/* Main Content Area */}
-          <div className="col-span-12 lg:col-span-8 space-y-6">
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">الطلاب</p>
-                      <h3 className="text-2xl font-bold mt-1">{teacher.studentsCount}</h3>
-                    </div>
-                    <div className="p-3 bg-blue-50 dark:bg-blue-900/50 rounded-xl">
-                      <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                    </div>
-                  </div>
-                  <Progress value={75} className="h-1 mt-4" />
-                </CardContent>
-              </Card>
-
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">الخبرة</p>
-                      <h3 className="text-2xl font-bold mt-1">{teacher.experience} سنوات</h3>
-                    </div>
-                    <div className="p-3 bg-green-50 dark:bg-green-900/50 rounded-xl">
-                      <BookOpen className="w-6 h-6 text-green-600 dark:text-green-400" />
-                    </div>
-                  </div>
-                  <Progress value={90} className="h-1 mt-4" />
-                </CardContent>
-              </Card>
-
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">الإنجاز</p>
-                      <h3 className="text-2xl font-bold mt-1">{teacher.completionRate}%</h3>
-                    </div>
-                    <div className="p-3 bg-yellow-50 dark:bg-yellow-900/50 rounded-xl">
-                      <Target className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
-                    </div>
-                  </div>
-                  <Progress value={teacher.completionRate} className="h-1 mt-4" />
-                </CardContent>
-              </Card>
-
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">الدروس</p>
-                      <h3 className="text-2xl font-bold mt-1">{teacher.upcomingClasses}</h3>
-                    </div>
-                    <div className="p-3 bg-purple-50 dark:bg-purple-900/50 rounded-xl">
-                      <Book className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                    </div>
-                  </div>
-                  <Progress value={60} className="h-1 mt-4" />
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Main Tabs */}
-            <Card className="border-0 shadow-lg">
+          <div className="col-span-12 lg:col-span-7 space-y-6">
+            {/* Enhanced Main Tabs */}
+            <Card className="border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl">
               <CardContent className="p-6">
                 <Tabs defaultValue="overview" className="space-y-6">
-                  <TabsList className="grid grid-cols-4 gap-4 bg-gray-100 dark:bg-gray-800 p-1">
-                    <TabsTrigger value="overview" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">نظرة عامة</TabsTrigger>
-                    <TabsTrigger value="schedule" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">الجدول</TabsTrigger>
-                    <TabsTrigger value="performance" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">الأداء</TabsTrigger>
-                    <TabsTrigger value="documents" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700">المستندات</TabsTrigger>
+                  <TabsList className="grid grid-cols-4 gap-4 bg-slate-100 dark:bg-slate-700 p-1 rounded-xl">
+                    
+                    
+                    
+                    <TabsTrigger 
+                      value="documents" 
+                      className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-600 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 rounded-lg"
+                    >
+                      المستندات
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="performance" 
+                      className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-600 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 rounded-lg"
+                    >
+                      الأداء
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="schedule" 
+                      className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-600 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 rounded-lg"
+                    >
+                      الجدول
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="overview" 
+                      className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-600 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 rounded-lg"
+                    >
+                      نظرة عامة
+                    </TabsTrigger>
                   </TabsList>
 
                   <TabsContent value="overview">
                     <div className="space-y-6">
                       <div>
-                        <h3 className="text-lg font-semibold mb-4">نبذة شخصية</h3>
-                        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                        <h3 className="text-xl font-semibold mb-4 text-slate-900 dark:text-white text-right">نبذة شخصية</h3>
+                        <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-lg text-right">
                           {teacher.bio}
                         </p>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Education History */}
-                        <Card>
+                        {/* Enhanced Education History */}
+                        <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20">
                           <CardHeader>
-                            <div className="flex items-center gap-2">
-                              <GraduationCap className="w-5 h-5 text-blue-600" />
-                              <CardTitle className="text-lg">المؤهلات العلمية</CardTitle>
+                            <div className="flex items-center justify-end gap-2">
+                              <CardTitle className="text-lg text-slate-900 dark:text-white">المؤهلات العلمية</CardTitle>
+                              <div className="p-2 bg-blue-500/10 rounded-lg">
+                                <GraduationCap className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                              </div>
                             </div>
                           </CardHeader>
                           <CardContent>
                             <ScrollArea className="h-[200px] pr-4">
                               <div className="space-y-4">
                                 {teacher.education.map((edu, index) => (
-                                  <div key={index} className="relative pr-4 pb-4 border-r-2 border-blue-200 dark:border-blue-800 last:pb-0">
+                                  <div key={index} className="relative pr-4 pb-4 border-r-2 border-blue-200 dark:border-blue-700 last:pb-0">
                                     <div className="absolute right-[-9px] top-0 w-4 h-4 rounded-full bg-blue-500" />
-                                    <h4 className="font-medium text-blue-600 dark:text-blue-400">{edu.degree}</h4>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">{edu.institution}</p>
-                                    <p className="text-sm text-gray-500">{edu.year}</p>
+                                    <h4 className="font-medium text-blue-600 dark:text-blue-400 text-right">{edu.degree}</h4>
+                                    <p className="text-sm text-slate-600 dark:text-slate-400 text-right">{edu.institution}</p>
+                                    <p className="text-sm text-slate-500 dark:text-slate-500 text-right">{edu.year}</p>
                                   </div>
                                 ))}
                               </div>
@@ -407,22 +557,24 @@ const TeacherProfilePage = () => {
                           </CardContent>
                         </Card>
 
-                        {/* Achievements */}
-                        <Card>
+                        {/* Enhanced Achievements */}
+                        <Card className="border-0 shadow-lg bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-800/20">
                           <CardHeader>
-                            <div className="flex items-center gap-2">
-                              <Award className="w-5 h-5 text-yellow-600" />
-                              <CardTitle className="text-lg">الإنجازات</CardTitle>
+                            <div className="flex items-center justify-end gap-2">
+                              <CardTitle className="text-lg text-slate-900 dark:text-white">الإنجازات</CardTitle>
+                              <div className="p-2 bg-amber-500/10 rounded-lg">
+                                <Trophy className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                              </div>
                             </div>
                           </CardHeader>
                           <CardContent>
                             <ScrollArea className="h-[200px] pr-4">
                               <div className="space-y-4">
                                 {teacher.achievements.map((achievement, index) => (
-                                  <div key={index} className="flex items-start gap-3 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                                    <Star className="w-5 h-5 text-yellow-600 mt-0.5" />
+                                  <div key={index} className="flex items-start gap-3 p-4 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+                                    <Star className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
                                     <div>
-                                      <p className="text-sm font-medium">{achievement}</p>
+                                      <p className="text-sm font-medium text-slate-700 dark:text-slate-300 text-right">{achievement}</p>
                                     </div>
                                   </div>
                                 ))}
@@ -432,75 +584,77 @@ const TeacherProfilePage = () => {
                         </Card>
                       </div>
 
-                      {/* Performance Overview */}
-                      <Card>
+                      {/* Enhanced Performance Overview */}
+                      <Card className="border-0 shadow-lg bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20">
                         <CardHeader>
-                          <div className="flex items-center gap-2">
-                            <BarChart className="w-5 h-5 text-purple-600" />
-                            <CardTitle className="text-lg">ملخص الأداء</CardTitle>
+                          <div className="flex items-center justify-end gap-2">
+                            <CardTitle className="text-lg text-slate-900 dark:text-white">ملخص الأداء</CardTitle>
+                            <div className="p-2 bg-purple-500/10 rounded-lg">
+                              <BarChart className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                            </div>
                           </div>
                         </CardHeader>
                         <CardContent>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
-                              <p className="text-sm text-gray-500 mb-2">تقدم الطلاب</p>
+                              <p className="text-sm text-slate-600 dark:text-slate-400 mb-2 text-right">تقدم الطلاب</p>
                               <div className="relative pt-1">
                                 <div className="flex mb-2 items-center justify-between">
                                   <div>
-                                    <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-green-600 bg-green-200">
+                                    <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-emerald-600 bg-emerald-100 dark:bg-emerald-900/30">
                                       جيد جداً
                                     </span>
                                   </div>
                                   <div className="text-right">
-                                    <span className="text-xs font-semibold inline-block text-green-600">
+                                    <span className="text-xs font-semibold inline-block text-emerald-600 dark:text-emerald-400">
                                       {teacher.performance.studentProgress}%
                                     </span>
                                   </div>
                                 </div>
-                                <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-green-200">
-                                  <div style={{ width: `${teacher.performance.studentProgress}%` }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"></div>
+                                <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-emerald-100 dark:bg-emerald-900/30">
+                                  <div style={{ width: `${teacher.performance.studentProgress}%` }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
                                 </div>
                               </div>
                             </div>
 
                             <div>
-                              <p className="text-sm text-gray-500 mb-2">نسبة الحضور</p>
+                              <p className="text-sm text-slate-600 dark:text-slate-400 mb-2 text-right">نسبة الحضور</p>
                               <div className="relative pt-1">
                                 <div className="flex mb-2 items-center justify-between">
                                   <div>
-                                    <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200">
+                                    <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-100 dark:bg-blue-900/30">
                                       ممتاز
                                     </span>
                                   </div>
                                   <div className="text-right">
-                                    <span className="text-xs font-semibold inline-block text-blue-600">
+                                    <span className="text-xs font-semibold inline-block text-blue-600 dark:text-blue-400">
                                       {teacher.performance.attendanceRate}%
                                     </span>
                                   </div>
                                 </div>
-                                <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-200">
-                                  <div style={{ width: `${teacher.performance.attendanceRate}%` }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
+                                <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-100 dark:bg-blue-900/30">
+                                  <div style={{ width: `${teacher.performance.attendanceRate}%` }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-blue-500 to-blue-600"></div>
                                 </div>
                               </div>
                             </div>
 
                             <div>
-                              <p className="text-sm text-gray-500 mb-2">متوسط الدرجات</p>
+                              <p className="text-sm text-slate-600 dark:text-slate-400 mb-2 text-right">متوسط الدرجات</p>
                               <div className="relative pt-1">
                                 <div className="flex mb-2 items-center justify-between">
                                   <div>
-                                    <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-purple-600 bg-purple-200">
+                                    <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-purple-600 bg-purple-100 dark:bg-purple-900/30">
                                       متميز
                                     </span>
                                   </div>
                                   <div className="text-right">
-                                    <span className="text-xs font-semibold inline-block text-purple-600">
+                                    <span className="text-xs font-semibold inline-block text-purple-600 dark:text-purple-400">
                                       {teacher.performance.averageScore}%
                                     </span>
                                   </div>
                                 </div>
-                                <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-purple-200">
-                                  <div style={{ width: `${teacher.performance.averageScore}%` }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"></div>
+                                <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-purple-100 dark:bg-purple-900/30">
+                                  <div style={{ width: `${teacher.performance.averageScore}%` }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-purple-500 to-purple-600"></div>
                                 </div>
                               </div>
                             </div>
@@ -512,29 +666,29 @@ const TeacherProfilePage = () => {
 
                   <TabsContent value="schedule">
                     <div className="space-y-6">
-                      {/* Weekly Schedule */}
+                      {/* Enhanced Weekly Schedule */}
                       {teacher.schedule.map((day, index) => (
-                        <Card key={index} className="overflow-hidden">
-                          <CardHeader className="bg-gray-50 dark:bg-gray-800/50">
-                            <CardTitle className="text-lg">{day.day}</CardTitle>
+                        <Card key={index} className="border-0 shadow-lg overflow-hidden bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700">
+                          <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+                            <CardTitle className="text-lg text-right">{day.day}</CardTitle>
                           </CardHeader>
-                          <CardContent className="p-4">
-                            <div className="space-y-3">
+                          <CardContent className="p-6">
+                            <div className="space-y-4">
                               {day.classes.map((cls, idx) => (
                                 <div
                                   key={idx}
-                                  className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
+                                  className="flex items-center gap-4 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-600 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                                 >
-                                  <div className="p-3 bg-blue-50 dark:bg-blue-900/50 rounded-xl">
+                                  <div className="p-3 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl">
                                     <Clock className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                                   </div>
                                   <div className="flex-1">
-                                    <h4 className="font-medium">{cls.subject}</h4>
-                                    <p className="text-sm text-gray-500">{cls.class}</p>
+                                    <h4 className="font-medium text-slate-900 dark:text-white text-right">{cls.subject}</h4>
+                                    <p className="text-sm text-slate-600 dark:text-slate-400 text-right">{cls.class}</p>
                                   </div>
                                   <div className="text-right">
-                                    <p className="font-medium">{cls.time}</p>
-                                    <p className="text-sm text-gray-500">{cls.students} طالب</p>
+                                    <p className="font-medium text-slate-900 dark:text-white">{cls.time}</p>
+                                    <p className="text-sm text-slate-600 dark:text-slate-400">{cls.students} طالب</p>
                                   </div>
                                 </div>
                               ))}
@@ -547,31 +701,39 @@ const TeacherProfilePage = () => {
 
                   <TabsContent value="performance">
                     <div className="space-y-6">
-                      <Card>
+                      <Card className="border-0 shadow-lg bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-indigo-800/20">
                         <CardHeader>
-                          <CardTitle>تحليل الأداء الشهري</CardTitle>
-                          <CardDescription>
+                          <div className="flex items-center justify-end gap-2">
+                            <CardTitle className="text-slate-900 dark:text-white">تحليل الأداء الشهري</CardTitle>
+                            <div className="p-2 bg-indigo-500/10 rounded-lg">
+                              <TrendingUp className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                            </div>
+                          </div>
+                          <CardDescription className="text-slate-600 dark:text-slate-400 text-right">
                             متابعة تطور أداء المعلم خلال الأشهر الماضية
                           </CardDescription>
                         </CardHeader>
                         <CardContent>
-                          <div className="h-[300px] flex items-center justify-center text-gray-500">
-                            سيتم إضافة الرسوم البيانية للأداء قريباً
+                          <div className="h-[300px] flex items-center justify-center text-slate-500 dark:text-slate-400">
+                            <div className="text-center">
+                              <BarChart className="w-16 h-16 mx-auto mb-4 text-slate-300 dark:text-slate-600" />
+                              <p className="text-right">سيتم إضافة الرسوم البيانية للأداء قريباً</p>
+                            </div>
                           </div>
                         </CardContent>
                       </Card>
 
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <Card>
+                        <Card className="border-0 shadow-lg bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20">
                           <CardHeader>
-                            <CardTitle className="text-lg">نسبة النجاح</CardTitle>
+                            <CardTitle className="text-lg text-slate-900 dark:text-white text-right">نسبة النجاح</CardTitle>
                           </CardHeader>
                           <CardContent>
                             <div className="flex items-center justify-center">
                               <div className="relative w-24 h-24">
                                 <svg className="w-24 h-24 transform -rotate-90">
                                   <circle
-                                    className="text-gray-200"
+                                    className="text-slate-200 dark:text-slate-700"
                                     strokeWidth="8"
                                     stroke="currentColor"
                                     fill="transparent"
@@ -580,7 +742,7 @@ const TeacherProfilePage = () => {
                                     cy="48"
                                   />
                                   <circle
-                                    className="text-green-500"
+                                    className="text-emerald-500"
                                     strokeWidth="8"
                                     strokeLinecap="round"
                                     stroke="currentColor"
@@ -595,28 +757,28 @@ const TeacherProfilePage = () => {
                                   />
                                 </svg>
                                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-                                  <span className="text-2xl font-bold">{teacher.performance.studentProgress}%</span>
+                                  <span className="text-2xl font-bold text-slate-900 dark:text-white">{teacher.performance.studentProgress}%</span>
                                 </div>
                               </div>
                             </div>
                           </CardContent>
                         </Card>
 
-                        <Card>
+                        <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20">
                           <CardHeader>
-                            <CardTitle className="text-lg">الحصص المكتملة</CardTitle>
+                            <CardTitle className="text-lg text-slate-900 dark:text-white text-right">الحصص المكتملة</CardTitle>
                           </CardHeader>
                           <CardContent>
                             <div className="text-center">
-                              <span className="text-3xl font-bold text-blue-600">{teacher.performance.classesCompleted}</span>
-                              <p className="text-sm text-gray-500 mt-2">من إجمالي {teacher.performance.classesCompleted + 50} حصة</p>
+                              <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">{teacher.performance.classesCompleted}</span>
+                              <p className="text-sm text-slate-600 dark:text-slate-400 mt-2 text-right">من إجمالي {teacher.performance.classesCompleted + 50} حصة</p>
                             </div>
                           </CardContent>
                         </Card>
 
-                        <Card>
+                        <Card className="border-0 shadow-lg bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-800/20">
                           <CardHeader>
-                            <CardTitle className="text-lg">متوسط التقييم</CardTitle>
+                            <CardTitle className="text-lg text-slate-900 dark:text-white text-right">متوسط التقييم</CardTitle>
                           </CardHeader>
                           <CardContent>
                             <div className="text-center">
@@ -625,13 +787,13 @@ const TeacherProfilePage = () => {
                                   <Star
                                     key={i}
                                     className={`w-6 h-6 ${i < Math.floor(teacher.rating)
-                                      ? 'text-yellow-400 fill-yellow-400'
-                                      : 'text-gray-300'
+                                      ? 'text-amber-400 fill-amber-400'
+                                      : 'text-slate-300 dark:text-slate-600'
                                     }`}
                                   />
                                 ))}
                               </div>
-                              <p className="text-sm text-gray-500 mt-2">{teacher.rating} من 5.0</p>
+                              <p className="text-sm text-slate-600 dark:text-slate-400 mt-2 text-right">{teacher.rating} من 5.0</p>
                             </div>
                           </CardContent>
                         </Card>
@@ -640,23 +802,29 @@ const TeacherProfilePage = () => {
                   </TabsContent>
 
                   <TabsContent value="documents">
-                    <Card>
+                    <Card className="border-0 shadow-lg bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700">
                       <CardHeader>
                         <div className="flex items-center justify-between">
-                          <CardTitle>المستندات والموارد</CardTitle>
-                          <Button>
-                            <FileText className="w-4 h-4 mr-2" />
+                          
+                          <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                            <FileText className="w-4 h-4 ml-2" />
                             رفع مستند
                           </Button>
+                          <div className="flex items-center justify-end gap-2">
+                            <CardTitle className="text-slate-900 dark:text-white">المستندات والموارد</CardTitle>
+                            <div className="p-2 bg-slate-500/10 rounded-lg">
+                              <FileText className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                            </div>
+                          </div>
                         </div>
                       </CardHeader>
                       <CardContent>
                         <div className="text-center py-12">
-                          <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+                          <FileText className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-6" />
+                          <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2 text-right">
                             لا توجد مستندات حالياً
                           </h3>
-                          <p className="text-gray-500">
+                          <p className="text-slate-600 dark:text-slate-400 text-right">
                             قم برفع المستندات والموارد التعليمية هنا
                           </p>
                         </div>

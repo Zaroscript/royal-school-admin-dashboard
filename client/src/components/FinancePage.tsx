@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { AreaChart } from '@/components/ui/charts/area-chart';
-import { PieChart as CustomPieChart } from '@/components/ui/charts/pie-chart';
+import { BarChart } from '@/components/ui/charts/bar-chart';
+import { PieChart } from '@/components/ui/charts/pie-chart';
 import {
   Table,
   TableBody,
@@ -44,26 +45,7 @@ import {
   BarChart as BarChartIcon
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
-} from '@/components/ui/chart';
-import {
-  BarChart as RechartsBarChart,
-  Bar,
-  LineChart as RechartsLineChart,
-  Line,
-  PieChart as RechartsPieChart,
-  Pie,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  ResponsiveContainer,
-} from 'recharts';
+import { getChartColors, chartPalettes } from '@/lib/chartColors';
 
 interface Transaction {
   id: number;
@@ -83,7 +65,7 @@ const FinancePage = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
 
-  // Sample financial data
+  // Enhanced financial data with better structure
   const monthlyData = [
     { name: 'يناير', income: 150000, expenses: 120000, profit: 30000 },
     { name: 'فبراير', income: 165000, expenses: 125000, profit: 40000 },
@@ -91,38 +73,23 @@ const FinancePage = () => {
     { name: 'أبريل', income: 175000, expenses: 140000, profit: 35000 },
     { name: 'مايو', income: 190000, expenses: 145000, profit: 45000 },
     { name: 'يونيو', income: 200000, expenses: 150000, profit: 50000 },
+    { name: 'يوليو', income: 185000, expenses: 130000, profit: 55000 },
+    { name: 'أغسطس', income: 210000, expenses: 155000, profit: 55000 },
   ];
 
   const expenseCategories = [
-    { name: 'الرواتب', value: 45, color: 'hsl(217 91% 60%)' },
-    { name: 'المرافق', value: 20, color: 'hsl(0 84% 60%)' },
-    { name: 'الصيانة', value: 15, color: 'hsl(142 76% 36%)' },
-    { name: 'المواد التعليمية', value: 12, color: 'hsl(45 93% 47%)' },
-    { name: 'أخرى', value: 8, color: 'hsl(280 40% 50%)' },
+    { name: 'الرواتب', value: 45, color: getChartColors.financial('expense') },
+    { name: 'المرافق', value: 20, color: getChartColors.financial('cost') },
+    { name: 'الصيانة', value: 15, color: getChartColors.financial('budget') },
+    { name: 'المواد التعليمية', value: 12, color: getChartColors.financial('balance') },
+    { name: 'أخرى', value: 8, color: getChartColors.category(4) },
   ];
 
-  const financialCategories = [
-    {
-      name: "الإيرادات",
-      key: "income",
-      color: "hsl(142 76% 36%)",
-      gradientFrom: "hsl(142 76% 36%)",
-      gradientTo: "hsl(142 76% 36% / 0)"
-    },
-    {
-      name: "المصروفات",
-      key: "expenses",
-      color: "hsl(0 84% 60%)",
-      gradientFrom: "hsl(0 84% 60%)",
-      gradientTo: "hsl(0 84% 60% / 0)"
-    },
-    {
-      name: "الربح",
-      key: "profit",
-      color: "hsl(217 91% 60%)",
-      gradientFrom: "hsl(217 91% 60%)",
-      gradientTo: "hsl(217 91% 60% / 0)"
-    }
+  const incomeSources = [
+    { name: 'رسوم دراسية', value: 65, color: getChartColors.financial('income') },
+    { name: 'رسوم إضافية', value: 20, color: getChartColors.financial('revenue') },
+    { name: 'تبرعات', value: 10, color: getChartColors.financial('budget') },
+    { name: 'أخرى', value: 5, color: getChartColors.category(3) },
   ];
 
   const transactions: Transaction[] = [
@@ -166,22 +133,27 @@ const FinancePage = () => {
       status: 'مكتمل',
       paymentMethod: 'نقداً'
     },
+    {
+      id: 5,
+      type: 'income',
+      description: 'تبرع من جمعية خيرية',
+      amount: 50000,
+      date: '2024-01-20',
+      category: 'تبرعات',
+      status: 'مكتمل',
+      paymentMethod: 'تحويل بنكي'
+    },
+    {
+      id: 6,
+      type: 'expense',
+      description: 'صيانة المختبر العلمي',
+      amount: 12000,
+      date: '2024-01-12',
+      category: 'الصيانة',
+      status: 'مكتمل',
+      paymentMethod: 'شيك'
+    },
   ];
-
-  const chartConfig = {
-    income: {
-      label: "الإيرادات",
-      color: "hsl(var(--chart-1))",
-    },
-    expenses: {
-      label: "المصروفات",
-      color: "hsl(var(--chart-2))",
-    },
-    profit: {
-      label: "الربح",
-      color: "hsl(var(--chart-3))",
-    },
-  };
 
   const filteredTransactions = transactions.filter(transaction => {
     const matchesSearch = transaction.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -226,7 +198,7 @@ const FinancePage = () => {
           </Button>
           <Button 
             onClick={handleAddTransaction} 
-            className="bg-gradient-to-r from-school-blue-500 to-school-red-500 hover:from-school-blue-600 hover:to-school-red-600 text-white hover-scale animate-gradient"
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white hover-scale animate-gradient"
           >
             <Plus className="w-4 h-4 ml-2" />
             إضافة معاملة
@@ -302,9 +274,16 @@ const FinancePage = () => {
           <CardContent>
             <AreaChart
               data={monthlyData}
-              categories={financialCategories}
-              yAxisFormatter={(value) => `${(value / 1000).toFixed(0)}ك`}
-              tooltipFormatter={(value) => `${value.toLocaleString()} ج.م`}
+              index="name"
+              categories={["income", "expenses", "profit"]}
+              colors={[
+                getChartColors.financial('income'),
+                getChartColors.financial('expense'),
+                getChartColors.financial('profit')
+              ]}
+              valueFormatter={(value) => `${(value / 1000).toFixed(0)}ك`}
+              height={350}
+              palette="financial"
             />
           </CardContent>
         </Card>
@@ -318,9 +297,58 @@ const FinancePage = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <CustomPieChart
+            <PieChart
               data={expenseCategories}
+              index="name"
+              category="value"
+              colors={expenseCategories.map(item => item.color)}
               valueFormatter={(value) => `${value}%`}
+              height={350}
+            />
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Additional Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Income Sources */}
+        <Card className="card-hover animate-scale-in">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <DollarSign className="w-5 h-5" />
+              مصادر الإيرادات
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <BarChart
+              data={incomeSources}
+              index="name"
+              categories={["value"]}
+              colors={incomeSources.map(item => item.color)}
+              valueFormatter={(value) => `${value}%`}
+              height={300}
+              palette="financial"
+            />
+          </CardContent>
+        </Card>
+
+        {/* Monthly Profit Trend */}
+        <Card className="card-hover animate-scale-in">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="w-5 h-5" />
+              اتجاه الأرباح الشهرية
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <AreaChart
+              data={monthlyData}
+              index="name"
+              categories={["profit"]}
+              colors={[getChartColors.financial('profit')]}
+              valueFormatter={(value) => `${(value / 1000).toFixed(0)}ك`}
+              height={300}
+              palette="financial"
             />
           </CardContent>
         </Card>
@@ -399,35 +427,29 @@ const FinancePage = () => {
                         <TableCell>
                           <Badge 
                             variant={transaction.type === 'income' ? 'default' : 'destructive'}
-                            className={`${transaction.type === 'income' 
-                              ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' 
-                              : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
-                            }`}
+                            className={transaction.type === 'income' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'}
                           >
                             {transaction.type === 'income' ? 'إيراد' : 'مصروف'}
                           </Badge>
                         </TableCell>
-                        <TableCell className="font-medium">{transaction.description}</TableCell>
-                        <TableCell className={`font-bold ${transaction.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
+                        <TableCell className="font-medium text-right">{transaction.description}</TableCell>
+                        <TableCell className={`font-bold ${transaction.type === 'income' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                           {transaction.type === 'income' ? '+' : '-'}{transaction.amount.toLocaleString()} ج.م
                         </TableCell>
-                        <TableCell>{new Date(transaction.date).toLocaleDateString('ar-EG')}</TableCell>
-                        <TableCell>{transaction.category}</TableCell>
+                        <TableCell className="text-right">{transaction.date}</TableCell>
+                        <TableCell className="text-right">{transaction.category}</TableCell>
                         <TableCell>
-                          <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+                          <Badge variant="outline" className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
                             {transaction.status}
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <div className="flex items-center gap-1">
-                            <Button variant="ghost" size="icon" onClick={() => handleEditTransaction(transaction)} className="hover-scale">
+                          <div className="flex gap-2">
+                            <Button size="sm" variant="outline" onClick={() => handleEditTransaction(transaction)}>
                               <Edit className="w-4 h-4" />
                             </Button>
-                            <Button variant="ghost" size="icon" className="hover-scale">
+                            <Button size="sm" variant="outline">
                               <Eye className="w-4 h-4" />
-                            </Button>
-                            <Button variant="ghost" size="icon" className="hover-scale text-red-600">
-                              <Trash2 className="w-4 h-4" />
                             </Button>
                           </div>
                         </TableCell>
@@ -439,113 +461,70 @@ const FinancePage = () => {
             </TabsContent>
 
             <TabsContent value="invoices" className="space-y-4">
-              <div className="text-center py-8">
-                <Receipt className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">إدارة الفواتير</h3>
-                <p className="text-gray-600 dark:text-gray-400">سيتم إضافة إدارة الفواتير قريباً</p>
+              <div className="text-center py-12">
+                <Receipt className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">لا توجد فواتير حالياً</h3>
+                <p className="text-gray-500 dark:text-gray-400">سيتم عرض الفواتير هنا عند إنشائها</p>
               </div>
             </TabsContent>
 
             <TabsContent value="budgets" className="space-y-4">
-              <div className="text-center py-8">
-                <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">إدارة الميزانيات</h3>
-                <p className="text-gray-600 dark:text-gray-400">سيتم إضافة إدارة الميزانيات قريباً</p>
+              <div className="text-center py-12">
+                <Target className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">لا توجد ميزانيات حالياً</h3>
+                <p className="text-gray-500 dark:text-gray-400">سيتم عرض الميزانيات هنا عند إنشائها</p>
               </div>
             </TabsContent>
 
             <TabsContent value="reports" className="space-y-4">
-              <div className="text-center py-8">
-                <BarChartIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">التقارير المالية</h3>
-                <p className="text-gray-600 dark:text-gray-400">سيتم إضافة التقارير المالية التفصيلية قريباً</p>
+              <div className="text-center py-12">
+                <BarChartIcon className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">لا توجد تقارير حالياً</h3>
+                <p className="text-gray-500 dark:text-gray-400">سيتم عرض التقارير هنا عند إنشائها</p>
               </div>
             </TabsContent>
           </Tabs>
         </CardContent>
       </Card>
 
-      {/* Add/Edit Transaction Dialog */}
+      {/* Add Transaction Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>
-              {selectedTransaction ? 'تعديل المعاملة المالية' : 'إضافة معاملة مالية جديدة'}
-            </DialogTitle>
+            <DialogTitle>{selectedTransaction ? 'تعديل المعاملة' : 'إضافة معاملة جديدة'}</DialogTitle>
             <DialogDescription>
-              {selectedTransaction ? 'قم بتعديل بيانات المعاملة' : 'أدخل تفاصيل المعاملة المالية الجديدة'}
+              {selectedTransaction ? 'قم بتعديل تفاصيل المعاملة المالية' : 'أدخل تفاصيل المعاملة المالية الجديدة'}
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="transactionType">نوع المعاملة *</Label>
-                <Select defaultValue={selectedTransaction?.type}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="اختر نوع المعاملة" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="income">إيراد</SelectItem>
-                    <SelectItem value="expense">مصروف</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="amount">المبلغ *</Label>
-                <Input id="amount" type="number" defaultValue={selectedTransaction?.amount} placeholder="0.00" />
-              </div>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="type" className="text-right">النوع</Label>
+              <Select defaultValue="income">
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="اختر النوع" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="income">إيراد</SelectItem>
+                  <SelectItem value="expense">مصروف</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div>
-              <Label htmlFor="description">وصف المعاملة *</Label>
-              <Input id="description" defaultValue={selectedTransaction?.description} placeholder="وصف تفصيلي للمعاملة" />
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="amount" className="text-right">المبلغ</Label>
+              <Input id="amount" type="number" className="col-span-3" />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="category">الفئة *</Label>
-                <Select defaultValue={selectedTransaction?.category}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="اختر الفئة" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="رسوم دراسية">رسوم دراسية</SelectItem>
-                    <SelectItem value="الرواتب">الرواتب</SelectItem>
-                    <SelectItem value="المرافق">المرافق</SelectItem>
-                    <SelectItem value="الصيانة">الصيانة</SelectItem>
-                    <SelectItem value="المواد التعليمية">المواد التعليمية</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="paymentMethod">طريقة الدفع</Label>
-                <Select defaultValue={selectedTransaction?.paymentMethod}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="اختر طريقة الدفع" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="نقداً">نقداً</SelectItem>
-                    <SelectItem value="تحويل بنكي">تحويل بنكي</SelectItem>
-                    <SelectItem value="بطاقة ائتمان">بطاقة ائتمان</SelectItem>
-                    <SelectItem value="شيك">شيك</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="description" className="text-right">الوصف</Label>
+              <Textarea id="description" className="col-span-3" />
             </div>
-            <div>
-              <Label htmlFor="date">تاريخ المعاملة *</Label>
-              <Input id="date" type="date" defaultValue={selectedTransaction?.date} />
-            </div>
-            <div>
-              <Label htmlFor="notes">ملاحظات</Label>
-              <Textarea id="notes" placeholder="ملاحظات إضافية" />
-            </div>
-            <div className="flex justify-end gap-3 pt-4 border-t">
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                إلغاء
-              </Button>
-              <Button onClick={handleSaveTransaction} className="bg-gradient-to-r from-school-blue-500 to-school-red-500 hover:from-school-blue-600 hover:to-school-red-600 text-white">
-                {selectedTransaction ? 'حفظ التغييرات' : 'إضافة المعاملة'}
-              </Button>
-            </div>
+          </div>
+          <div className="flex justify-end gap-3">
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+              إلغاء
+            </Button>
+            <Button onClick={handleSaveTransaction}>
+              {selectedTransaction ? 'تحديث' : 'إضافة'}
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

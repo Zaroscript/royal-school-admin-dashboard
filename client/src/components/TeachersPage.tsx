@@ -146,7 +146,7 @@ const TeachersPage = () => {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">المعلمون</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1">إدارة وعرض معلومات المعلمين</p>
         </div>
-        <Button className="flex items-center gap-2">
+        <Button className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white transition-all duration-300 hover:scale-105">
           <Plus className="w-4 h-4" />
           إضافة معلم جديد
         </Button>
@@ -156,45 +156,45 @@ const TeachersPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardContent className="flex items-center gap-4 p-6">
-            <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-full">
-              <Users className="w-6 h-6 text-blue-600 dark:text-blue-300" />
+            <div className="p-3 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full">
+              <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
               <p className="text-sm text-gray-600 dark:text-gray-400">إجمالي المعلمين</p>
-              <h3 className="text-2xl font-bold">{teachers.length}</h3>
+              <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400">{teachers.length}</h3>
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="flex items-center gap-4 p-6">
-            <div className="p-3 bg-green-100 dark:bg-green-900 rounded-full">
-              <CheckCircle2 className="w-6 h-6 text-green-600 dark:text-green-300" />
+            <div className="p-3 bg-gradient-to-r from-green-100 to-blue-100 dark:from-green-900/30 dark:to-blue-900/30 rounded-full">
+              <CheckCircle2 className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
             <div>
               <p className="text-sm text-gray-600 dark:text-gray-400">المعلمين النشطين</p>
-              <h3 className="text-2xl font-bold">{teachers.filter(t => t.status === 'active').length}</h3>
+              <h3 className="text-2xl font-bold text-green-600 dark:text-green-400">{teachers.filter(t => t.status === 'active').length}</h3>
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="flex items-center gap-4 p-6">
-            <div className="p-3 bg-yellow-100 dark:bg-yellow-900 rounded-full">
-              <BookOpen className="w-6 h-6 text-yellow-600 dark:text-yellow-300" />
+            <div className="p-3 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 rounded-full">
+              <BookOpen className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
             <div>
               <p className="text-sm text-gray-600 dark:text-gray-400">المواد الدراسية</p>
-              <h3 className="text-2xl font-bold">{new Set(teachers.map(t => t.subject)).size}</h3>
+              <h3 className="text-2xl font-bold text-purple-600 dark:text-purple-400">{new Set(teachers.map(t => t.subject)).size}</h3>
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="flex items-center gap-4 p-6">
-            <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-full">
-              <Star className="w-6 h-6 text-purple-600 dark:text-purple-300" />
+            <div className="p-3 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full">
+              <Star className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
               <p className="text-sm text-gray-600 dark:text-gray-400">متوسط التقييم</p>
-              <h3 className="text-2xl font-bold">{(teachers.reduce((acc, t) => acc + t.rating, 0) / teachers.length).toFixed(1)}</h3>
+              <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400">{(teachers.reduce((acc, t) => acc + t.rating, 0) / teachers.length).toFixed(1)}</h3>
             </div>
           </CardContent>
         </Card>
@@ -215,19 +215,34 @@ const TeachersPage = () => {
         </div>
         <div className="flex gap-2">
           <Button 
-            variant={selectedStatus === 'all' ? 'default' : 'outline'}
+            variant="outline"
+            className={`${
+              selectedStatus === 'all' 
+                ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white border-transparent' 
+                : 'bg-transparent border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white hover:border-transparent'
+            } transition-all duration-300 hover:scale-105`}
             onClick={() => setSelectedStatus('all')}
           >
             الكل
           </Button>
           <Button 
-            variant={selectedStatus === 'active' ? 'default' : 'outline'}
+            variant="outline"
+            className={`${
+              selectedStatus === 'active' 
+                ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white border-transparent' 
+                : 'bg-transparent border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white hover:border-transparent'
+            } transition-all duration-300 hover:scale-105`}
             onClick={() => setSelectedStatus('active')}
           >
             نشط
           </Button>
           <Button 
-            variant={selectedStatus === 'inactive' ? 'default' : 'outline'}
+            variant="outline"
+            className={`${
+              selectedStatus === 'inactive' 
+                ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white border-transparent' 
+                : 'bg-transparent border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white hover:border-transparent'
+            } transition-all duration-300 hover:scale-105`}
             onClick={() => setSelectedStatus('inactive')}
           >
             غير نشط
@@ -293,25 +308,25 @@ const TeachersPage = () => {
             <CardContent className="pt-6">
               <div className="space-y-4">
                 {/* Progress Section */}
-                <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm text-gray-600 dark:text-gray-400">نسبة إكمال المنهج</span>
-                    <span className="font-medium">{teacher.completionRate}%</span>
+                    <span className="font-medium text-blue-600 dark:text-blue-400">{teacher.completionRate}%</span>
                   </div>
-                  <Progress value={teacher.completionRate} className="h-2" />
+                  <Progress value={teacher.completionRate} className="h-2 bg-blue-100 dark:bg-blue-900/30" />
                 </div>
 
                 <div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm text-gray-600 dark:text-gray-400">نسبة إكمال الدروس</span>
-                    <span className="font-medium">{teacher.completionRate}%</span>
+                    <span className="font-medium text-purple-600 dark:text-purple-400">{teacher.completionRate}%</span>
                   </div>
-                  <Progress value={teacher.completionRate} className="h-2" />
+                  <Progress value={teacher.completionRate} className="h-2 bg-purple-100 dark:bg-purple-900/30" />
                 </div>
 
                 <div className="flex flex-wrap gap-2">
                   {teacher.specializations.map((spec, index) => (
-                    <Badge key={index} variant="secondary">
+                    <Badge key={index} variant="secondary" className="bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800">
                       {spec}
                     </Badge>
                   ))}
@@ -319,25 +334,25 @@ const TeachersPage = () => {
 
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                    <Mail className="w-4 h-4" />
+                    <Mail className="w-4 h-4 text-blue-500" />
                     {teacher.email}
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                    <Phone className="w-4 h-4" />
+                    <Phone className="w-4 h-4 text-purple-500" />
                     {teacher.phone}
                   </div>
                 </div>
 
                 {teacher.achievements.length > 0 && (
-                  <div className="border-t pt-4 mt-4">
-                    <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
+                  <div className="border-t border-blue-100 dark:border-blue-800 pt-4 mt-4">
+                    <h4 className="text-sm font-medium mb-2 flex items-center gap-2 text-blue-600 dark:text-blue-400">
                       <Award className="w-4 h-4 text-yellow-500" />
                       الإنجازات
                     </h4>
                     <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                       {teacher.achievements.map((achievement, index) => (
                         <li key={index} className="flex items-center gap-2">
-                          <Star className="w-3 h-3" />
+                          <Star className="w-3 h-3 text-blue-500" />
                           {achievement}
                         </li>
                       ))}
@@ -346,30 +361,30 @@ const TeachersPage = () => {
                 )}
 
                 <div className="flex items-center text-sm text-gray-500">
-                  <CalendarIcon className="w-4 h-4 mr-2" />
+                  <CalendarIcon className="w-4 h-4 mr-2 text-purple-500" />
                   {teacher.joinDate}
                 </div>
               </div>
             </CardContent>
             <div className="mt-auto">
               {/* Quick Stats Bar */}
-              <div className="grid grid-cols-3 border-t border-b dark:border-gray-700">
-                <div className="p-3 text-center border-r dark:border-gray-700">
-                  <div className="text-2xl font-semibold text-blue-500">{teacher.studentsCount}</div>
+              <div className="grid grid-cols-3 border-t border-b border-blue-100 dark:border-blue-800">
+                <div className="p-3 text-center border-r border-blue-100 dark:border-blue-800">
+                  <div className="text-2xl font-semibold text-blue-600 dark:text-blue-400">{teacher.studentsCount}</div>
                   <div className="text-xs text-gray-500 dark:text-gray-400">الطلاب</div>
                 </div>
-                <div className="p-3 text-center border-r dark:border-gray-700">
-                  <div className="text-2xl font-semibold text-green-500">{teacher.experience}</div>
+                <div className="p-3 text-center border-r border-blue-100 dark:border-blue-800">
+                  <div className="text-2xl font-semibold text-purple-600 dark:text-purple-400">{teacher.experience}</div>
                   <div className="text-xs text-gray-500 dark:text-gray-400">سنوات الخبرة</div>
                 </div>
                 <div className="p-3 text-center">
-                  <div className="text-2xl font-semibold text-yellow-500">{teacher.rating}</div>
+                  <div className="text-2xl font-semibold text-blue-600 dark:text-blue-400">{teacher.rating}</div>
                   <div className="text-xs text-gray-500 dark:text-gray-400">التقييم</div>
                 </div>
               </div>
 
               {/* Status and Actions */}
-              <div className="p-4 bg-gray-50 dark:bg-gray-800">
+              <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-t border-blue-100 dark:border-blue-800">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <div className={`w-2 h-2 rounded-full ${teacher.status === 'active' ? 'bg-green-500' : 'bg-gray-400'}`} />
@@ -377,7 +392,7 @@ const TeachersPage = () => {
                       {teacher.status === 'active' ? 'متاح الآن' : 'غير متاح'}
                     </span>
                   </div>
-                  <Badge variant="outline" className="font-normal">
+                  <Badge variant="outline" className="font-normal border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300">
                     <Clock className="w-3 h-3 mr-1" />
                     آخر نشاط: {teacher.lastActive}
                   </Badge>
@@ -385,15 +400,15 @@ const TeachersPage = () => {
 
                 {/* Action Buttons */}
                 <div className="flex gap-2">
-                  <Button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white" size="sm">
+                  <Button className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white transition-all duration-300 hover:scale-105" size="sm">
                     <CalendarIcon className="w-4 h-4 mr-2" />
                     عرض الجدول
                   </Button>
-                  <Button variant="outline" size="sm" className="px-3">
-                    <Mail className="w-4 h-4 text-gray-600" />
+                  <Button variant="outline" size="sm" className="px-3 bg-transparent border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white hover:border-transparent transition-all duration-300 hover:scale-105">
+                    <Mail className="w-4 h-4" />
                   </Button>
-                  <Button variant="outline" size="sm" className="px-3">
-                    <Phone className="w-4 h-4 text-gray-600" />
+                  <Button variant="outline" size="sm" className="px-3 bg-transparent border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white hover:border-transparent transition-all duration-300 hover:scale-105">
+                    <Phone className="w-4 h-4" />
                   </Button>
                 </div>
               </div>
