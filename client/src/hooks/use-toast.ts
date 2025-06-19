@@ -1,4 +1,5 @@
 import * as React from "react"
+import { CheckCircle, XCircle } from 'lucide-react'
 
 import type {
   ToastActionElement,
@@ -139,7 +140,14 @@ function dispatch(action: Action) {
 
 type Toast = Omit<ToasterToast, "id">
 
-function toast({ ...props }: Toast) {
+export type ToastOptions = {
+  title: string;
+  description?: string;
+  variant?: 'default' | 'destructive';
+  duration?: number;
+};
+
+export function toast({ title, description, variant = 'default', duration = 4000 }: ToastOptions) {
   const id = genId()
 
   const update = (props: ToasterToast) =>
@@ -152,7 +160,10 @@ function toast({ ...props }: Toast) {
   dispatch({
     type: "ADD_TOAST",
     toast: {
-      ...props,
+      title,
+      description,
+      variant,
+      duration,
       id,
       open: true,
       onOpenChange: (open) => {
@@ -188,4 +199,4 @@ function useToast() {
   }
 }
 
-export { useToast, toast }
+export { useToast }

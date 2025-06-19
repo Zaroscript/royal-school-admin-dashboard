@@ -1,22 +1,41 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useAuth } from '@/contexts/AuthContext';
-import { useTheme } from '@/contexts/ThemeContext';
-import { Moon, Sun, Crown, AlertCircle, Eye, EyeOff, Mail, Lock, Shield, Activity } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import {
+  Moon,
+  Sun,
+  Crown,
+  AlertCircle,
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  Shield,
+  Activity,
+} from "lucide-react";
+import { toast } from "@/hooks/use-toast";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const { error } = useAuthStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +50,7 @@ const LoginPage = () => {
 
     setIsLoading(true);
     const success = await login(email, password);
-    
+
     if (success) {
       toast({
         title: "تم تسجيل الدخول بنجاح",
@@ -39,7 +58,7 @@ const LoginPage = () => {
         variant: "default",
       });
       // Navigate to dashboard after successful login
-      navigate('/dashboard');
+      navigate("/dashboard");
     } else {
       toast({
         title: "خطأ في تسجيل الدخول",
@@ -52,9 +71,15 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Error Message */}
+      {error && (
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded shadow z-50">
+          {error}
+        </div>
+      )}
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-      
+
       {/* Floating Elements */}
       <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute bottom-20 right-20 w-40 h-40 bg-gradient-to-r from-purple-400/20 to-blue-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -78,13 +103,13 @@ const LoginPage = () => {
           <CardHeader className="text-center space-y-6 pb-8">
             {/* Logo */}
             <div className="mx-auto w-24 h-24 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 p-2">
-              <img 
-                src="/logo.png" 
-                alt="Royal School Logo" 
+              <img
+                src="/logo.png"
+                alt="Royal School Logo"
                 className="w-full h-full object-contain rounded-xl"
               />
             </div>
-            
+
             {/* Title */}
             <div className="space-y-2">
               <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -98,12 +123,15 @@ const LoginPage = () => {
               </p>
             </div>
           </CardHeader>
-          
+
           <CardContent className="px-8 pb-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Field */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-right block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <Label
+                  htmlFor="email"
+                  className="text-right block text-sm font-medium text-slate-700 dark:text-slate-300"
+                >
                   البريد الإلكتروني
                 </Label>
                 <div className="relative">
@@ -119,10 +147,13 @@ const LoginPage = () => {
                   />
                 </div>
               </div>
-              
+
               {/* Password Field */}
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-right block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <Label
+                  htmlFor="password"
+                  className="text-right block text-sm font-medium text-slate-700 dark:text-slate-300"
+                >
                   كلمة المرور
                 </Label>
                 <div className="relative">
@@ -141,14 +172,18 @@ const LoginPage = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors duration-200"
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
               </div>
-              
+
               {/* Login Button */}
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
               >
@@ -165,29 +200,11 @@ const LoginPage = () => {
                 )}
               </Button>
             </form>
-            
-            {/* Demo Accounts */}
-            <div className="mt-8 p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl border border-blue-200 dark:border-blue-700">
-              <div className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-300 font-medium mb-3">
-                <AlertCircle className="w-4 h-4" />
-                <span>حسابات تجريبية</span>
-              </div>
-              <div className="space-y-2 text-xs text-blue-600 dark:text-blue-400">
-                <div className="flex items-center gap-2">
-                  <Activity className="w-3 h-3" />
-                  <span>مدير النظام: admin@royal.edu - كلمة المرور: 123456</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Activity className="w-3 h-3" />
-                  <span>منسق: coordinator@royal.edu - كلمة المرور: 123456</span>
-                </div>
-              </div>
-            </div>
 
             {/* Footer */}
             <div className="mt-6 text-center">
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                © 2025 Royal School Management System. جميع الحقوق محفوظة.
+                © 2025 TechX. جميع الحقوق محفوظة.
               </p>
             </div>
           </CardContent>

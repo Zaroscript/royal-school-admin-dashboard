@@ -28,6 +28,7 @@ import {
   Zap,
   Star
 } from 'lucide-react';
+import { formatDate } from '@/lib/utils';
 
 // Mock data for demonstration
 const mockCases = [
@@ -292,7 +293,7 @@ const StudentAffairsPage: React.FC = () => {
                       <span>•</span>
                       <div className="flex items-center space-x-1 space-x-reverse">
                         <Calendar className="h-4 w-4" />
-                        <span>{case_.createdAt}</span>
+                        <span>{formatDate(case_.createdAt)}</span>
                       </div>
                     </div>
                   </div>

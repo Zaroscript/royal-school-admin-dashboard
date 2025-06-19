@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -40,8 +40,13 @@ import {
   Eye,
   Edit,
   MinusCircle,
-  Trash2
+  Trash2,
+  Download
 } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
+import { useTeacherStore } from '../store/useTeacherStore';
+import Loader from '@/components/ui/loader';
+import { formatDate } from '@/lib/utils';
 
 interface Teacher {
   id: string;
@@ -64,67 +69,27 @@ interface Teacher {
 }
 
 const TeachersPage = () => {
+  const { teachers, fetchTeachers, loading, error } = useTeacherStore();
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState<'all' | 'active' | 'inactive'>('all');
-  const [teachers] = useState<Teacher[]>([
-    {
-      id: '1',
-      name: 'د. أحمد محمود',
-      email: 'ahmed.mahmoud@school.com',
-      phone: '01234567890',
-      subject: 'الرياضيات',
-      experience: 8,
-      studentsCount: 120,
-      avatar: '/assets/img/profiles/avatar-02.jpg',
-      status: 'active',
-      joinDate: '2023-01-15',
-      rating: 4.8,
-      completionRate: 95,
-      specializations: ['الجبر', 'الهندسة', 'التفاضل'],
-      achievements: ['معلم العام 2024', 'أفضل نتائج امتحانات'],
-      upcomingClasses: 3,
-      lastActive: '5 دقائق مضت',
-      certifications: ['شهادة التدريس المتقدم', 'دورة التعليم الإلكتروني']
-    },
-    {
-      id: '2',
-      name: 'أ. فاطمة السيد',
-      email: 'fatima.elsayed@school.com',
-      phone: '01234567891',
-      subject: 'اللغة العربية',
-      experience: 12,
-      studentsCount: 95,
-      avatar: '/api/placeholder/40/40',
-      status: 'active',
-      joinDate: '2018-09-01',
-      rating: 4.5,
-      completionRate: 90,
-      specializations: ['النحو', 'الصرف', 'البلاغة'],
-      achievements: ['أفضل معلم مبتكر 2023'],
-      upcomingClasses: 2,
-      lastActive: '10 دقائق مضت',
-      certifications: ['شهادة التميز في التدريس']
-    },
-    {
-      id: '3',
-      name: 'د. محمد علي',
-      email: 'mohamed.ali@school.com',
-      phone: '01234567892',
-      subject: 'الفيزياء',
-      experience: 6,
-      studentsCount: 85,
-      avatar: '/api/placeholder/40/40',
-      status: 'active',
-      joinDate: '2022-02-15',
-      rating: 4.7,
-      completionRate: 92,
-      specializations: ['الميكانيكا', 'الكهرباء', 'الطاقة'],
-      achievements: ['جائزة أفضل معلم 2022'],
-      upcomingClasses: 1,
-      lastActive: '15 دقيقة مضت',
-      certifications: ['دورة الفيزياء المتقدمة']
+  const [selectedDepartment, setSelectedDepartment] = useState('all');
+  const [selectedStatus, setSelectedStatus] = useState('all');
+
+  useEffect(() => {
+    fetchTeachers();
+  }, [fetchTeachers]);
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: 'خطأ في تحميل بيانات المعلمين',
+        description: error,
+        variant: 'destructive',
+      });
     }
-  ]);
+  }, [error]);
+
+  if (loading) return <Loader variant="royal" text="جاري تحميل بيانات المعلمين..." />;
+  if (error) return null;
 
   const getStatusColor = (status: Teacher['status']) => {
     return status === 'active' ? 'bg-green-500' : 'bg-gray-400';
@@ -134,8 +99,9 @@ const TeachersPage = () => {
     const matchesSearch = teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          teacher.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          teacher.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesDepartment = selectedDepartment === 'all' || teacher.subject === selectedDepartment;
     const matchesStatus = selectedStatus === 'all' || teacher.status === selectedStatus;
-    return matchesSearch && matchesStatus;
+    return matchesSearch && matchesDepartment && matchesStatus;
   });
 
   return (
@@ -298,11 +264,11 @@ const TeachersPage = () => {
                 <CardTitle className="mt-4 text-xl">{teacher.name}</CardTitle>
                 <CardDescription className="text-center">
                   {teacher.subject}
-                  <div className="flex items-center justify-center gap-1 mt-1">
-                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    <span className="font-medium">{teacher.rating}</span>
-                  </div>
                 </CardDescription>
+                <div className="flex items-center justify-center gap-1 mt-1">
+                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  <span className="font-medium">{teacher.rating}</span>
+                </div>
               </div>
             </CardHeader>
             <CardContent className="pt-6">
@@ -362,7 +328,7 @@ const TeachersPage = () => {
 
                 <div className="flex items-center text-sm text-gray-500">
                   <CalendarIcon className="w-4 h-4 mr-2 text-purple-500" />
-                  {teacher.joinDate}
+                  {formatDate(teacher.joinDate, 'd MMMM yyyy')}
                 </div>
               </div>
             </CardContent>
@@ -394,7 +360,7 @@ const TeachersPage = () => {
                   </div>
                   <Badge variant="outline" className="font-normal border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300">
                     <Clock className="w-3 h-3 mr-1" />
-                    آخر نشاط: {teacher.lastActive}
+                    آخر نشاط: {formatDate(teacher.lastActive, 'EEEE، d MMMM yyyy')}
                   </Badge>
                 </div>
 

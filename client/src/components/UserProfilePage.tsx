@@ -43,7 +43,7 @@ import {
   Smartphone,
   MapPin as LocationIcon,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, formatDate } from '@/lib/utils';
 
 interface UserPreferences {
   emailNotifications: boolean;
@@ -207,7 +207,7 @@ const UserProfilePage = () => {
                         </Badge>
                         <Badge variant="outline" className="flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
-                          عضو منذ {extendedUser.joinedDate}
+                          عضو منذ {formatDate(extendedUser.joinedDate)}
                         </Badge>
                       </div>
                     </div>

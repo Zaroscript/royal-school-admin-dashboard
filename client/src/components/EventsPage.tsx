@@ -24,6 +24,8 @@ import {
 } from 'lucide-react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday } from 'date-fns';
 import { ar } from 'date-fns/locale';
+import Loader from './ui/loader';
+import { formatDate } from '@/lib/utils';
 
 const EventsPage = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -301,10 +303,10 @@ const EventsPage = () => {
                     </Button>
                     <div className="text-center">
                       <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">
-                        {format(date, 'MMMM yyyy', { locale: ar })}
+                        {formatDate(date, 'MMMM yyyy')}
                       </h3>
                       <p className="text-sm text-slate-600 dark:text-slate-400">
-                        {format(date, 'EEEE', { locale: ar })}
+                        {formatDate(date, 'EEEE')}
                       </p>
                     </div>
                     <Button 
@@ -407,7 +409,7 @@ const EventsPage = () => {
                     <div className="flex items-center justify-between">
                       <h3 className="font-semibold text-slate-800 dark:text-slate-200 flex items-center space-x-2 space-x-reverse">
                         <Clock className="h-4 w-4 text-blue-600" />
-                        <span>أحداث {format(date, 'EEEE، d MMMM yyyy', { locale: ar })}</span>
+                        <span>أحداث {formatDate(date, 'EEEE، d MMMM yyyy')}</span>
                   </h3>
                       <Badge className="bg-gradient-to-r from-blue-500 to-purple-500 text-white border-0 shadow-md">
                         {todayEvents.length} حدث

@@ -3,101 +3,104 @@ import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
-    fullName: {
+    name: {
       type: String,
-      required: true,
+      required: [true, 'Name is required'],
+      trim: true,
+      maxlength: [50, 'Name cannot exceed 50 characters']
     },
     email: {
       type: String,
-      required: true,
+      required: [true, 'Email is required'],
       unique: true,
+      lowercase: true,
+      trim: true,
+      match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
     },
     password: {
       type: String,
-      required: true,
+      required: [true, 'Password is required'],
+      minlength: [6, 'Password must be at least 6 characters']
     },
     role: {
       type: String,
-      default: "user",
+      enum: ['admin', 'moderator'],
+      default: 'moderator'
     },
-    profilePic: {
+    avatar: {
       type: String,
-      default: "",
+      default: ''
     },
-    coverImage: {
+    phone: {
       type: String,
-      default: "",
+      trim: true
     },
-    location: {
+    department: {
       type: String,
-      default: "",
+      trim: true
     },
-    about: {
+    position: {
       type: String,
-      default: "",
+      trim: true
     },
-    birthDate: {
-      type: Date,
-      default: "",
-    },
-    joinedDate: {
-      type: Date,
-      default: Date.now,
-    },
-    isVerified: {
+    isActive: {
       type: Boolean,
-      default: false,
+      default: true
     },
-    visitedDestinations: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Destination",
-      },
-    ],
-    posts: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Post",
-      },
-    ],
-    savedPosts: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Post",
-      },
-    ],
-    following: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    followers: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    accountSettings: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "AccountSettings",
+    lastLogin: {
+      type: Date
     },
-    resetPasswordToken: { type: String, default: null },
-    resetPasswordExpires: { type: Date, default: null },
+    resetPasswordToken: { 
+      type: String, 
+      default: null 
+    },
+    resetPasswordExpires: { 
+      type: Date, 
+      default: null 
+    }
   },
-  { timestamps: true }
+  { 
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+  }
 );
+
+// Index for better query performance
+// userSchema.index({ email: 1 });
+userSchema.index({ role: 1 });
+userSchema.index({ isActive: 1 });
 
 // Hash password before saving
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
-  this.password = await bcrypt.hash(this.password, 10);
-  next();
+  
+  try {
+    const salt = await bcrypt.genSalt(12);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Compare password method
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
+};
+
+// Virtual for user display name
+userSchema.virtual('displayName').get(function() {
+  return this.name || this.email.split('@')[0];
+});
+
+// Method to get public profile
+userSchema.methods.getPublicProfile = function() {
+  const userObject = this.toObject();
+  delete userObject.password;
+  delete userObject.resetPasswordToken;
+  delete userObject.resetPasswordExpires;
+  return userObject;
 };
 
 const User = mongoose.model("User", userSchema);

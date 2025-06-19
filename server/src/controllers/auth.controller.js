@@ -1,278 +1,384 @@
-import { generateToken } from "../lib/utils.js";
-import User from "../models/user.model.js";
-import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import User from '../models/user.model.js';
+import { asyncHandler } from '../middleware/error.middleware.js';
 import { generateResetToken } from "../lib/utils.js";
 import { sendResetEmail } from "../lib/sendEmail.js";
 
-export const signup = async (req, res) => {
-  const { fullName, email, password } = req.body;
-  try {
-    if (!fullName || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-
-    if (password.length < 6) {
-      return res
-        .status(400)
-        .json({ message: "Password must be at least 6 characters" });
-    }
-
-    const user = await User.findOne({ email });
-
-    if (user) return res.status(400).json({ message: "Email already exists" });
-
-    const newUser = new User({
-      fullName,
-      email,
-      password,
-    });
-
-    if (newUser) {
-      await newUser.save();
-
-      // Generate token
-      const token = generateToken(newUser._id, res);
-
-      res.status(201).json({
-        _id: newUser._id,
-        fullName: newUser.fullName,
-        email: newUser.email,
-        profilePic: newUser.profilePic,
-        token,
-      });
-    } else {
-      res.status(400).json({ message: "Invalid user data" });
-    }
-  } catch (error) {
-    console.log("Error in signup controller", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
+// Generate JWT Token
+const generateToken = (userId) => {
+  return jwt.sign({ userId }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE || '30d'
+  });
 };
 
-export const login = async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ email });
+// @desc    Register new user
+// @route   POST /api/auth/register
+// @access  Public
+export const register = asyncHandler(async (req, res) => {
+  const { name, email, password, role } = req.body;
 
-    if (!user) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
+  // Validation
+  if (!name || !email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: 'يرجى إدخال جميع البيانات المطلوبة'
+    });
+  }
 
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
+  if (password.length < 6) {
+    return res.status(400).json({
+      success: false,
+      message: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل'
+    });
+  }
 
+  // Check if user exists
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return res.status(400).json({
+      success: false,
+      message: 'البريد الإلكتروني مسجل مسبقاً'
+    });
+  }
+
+  // Create user
+  const user = await User.create({
+    name,
+    email,
+    password,
+    role: role || 'moderator'
+  });
+
+  if (user) {
     // Generate token
-    const token = generateToken(user._id, res);
+    const token = generateToken(user._id);
 
-    res.status(200).json({
-      _id: user._id,
-      fullName: user.fullName,
-      email: user.email,
-      profilePic: user.profilePic,
-      token,
-    });
-  } catch (error) {
-    console.log("Error in login controller", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-export const logout = (req, res) => {
-  try {
-    res.cookie("jwt", "", { maxAge: 0 });
-    res.status(200).json({ message: "Logged out successfully" });
-  } catch (error) {
-    console.log("Error in logout controller", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-export const updateProfile = async (req, res) => {
-  try {
-    const {
-      profilePic,
-      fullName,
-      email,
-      coverImage,
-      location,
-      about,
-      status,
-      birthDate,
-    } = req.body;
-
-    const userId = req.user._id;
-    const updateData = {};
-
-    // Add all fields that were provided to the update object
-    if (fullName) updateData.fullName = fullName;
-    if (email) updateData.email = email;
-    if (coverImage) updateData.coverImage = coverImage;
-    if (location) updateData.location = location;
-    if (about) updateData.about = about;
-    if (status) updateData.status = status;
-    if (birthDate) updateData.birthDate = new Date(birthDate);
-
-    // Handle profile pic with special Cloudinary upload if needed
-    if (profilePic) {
-      if (profilePic.startsWith("data:") || profilePic.startsWith("blob:")) {
-        try {
-          const uploadResponse = await cloudinary.uploader.upload(profilePic);
-          updateData.profilePic = uploadResponse.secure_url;
-        } catch (uploadError) {
-          console.log("Error uploading image to Cloudinary:", uploadError);
-          return res.status(400).json({
-            message: "Image upload failed. Please try a different image.",
-          });
-        }
-      } else {
-        updateData.profilePic = profilePic;
+    res.status(201).json({
+      success: true,
+      message: 'تم إنشاء الحساب بنجاح',
+      data: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar,
+        token
       }
-    }
-
-    // Ensure there's at least one field to update
-    if (Object.keys(updateData).length === 0) {
-      return res.status(400).json({ message: "No valid update data provided" });
-    }
-
-    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
-      new: true, // Return the updated document
-      runValidators: true, // Run model validators on update
     });
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.status(200).json(updatedUser);
-  } catch (error) {
-    console.log("error in update profile:", error);
-
-    // More specific error messages based on error type
-    if (error.name === "ValidationError") {
-      return res.status(400).json({
-        message: "Validation error",
-        errors: Object.values(error.errors).map((err) => err.message),
-      });
-    }
-
-    if (error.code === 11000) {
-      // Duplicate key error
-      return res.status(400).json({ message: "Email already in use" });
-    }
-
-    res.status(500).json({ message: "Internal server error" });
+  } else {
+    res.status(400).json({
+      success: false,
+      message: 'بيانات المستخدم غير صحيحة'
+    });
   }
-};
-export const checkAuth = async (req, res) => {
-  try {
-    if (!req.user) {
-      return res.status(401).json({ message: "Not authenticated" });
-    }
+});
 
-    const user = await User.findById(req.user._id).select("-password");
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+// @desc    Login user
+// @route   POST /api/auth/login
+// @access  Public
+export const login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
 
-    res.status(200).json(user);
-  } catch (error) {
-    console.log("Error in checkAuth controller", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
+  console.log('Login attempt:', { email, password });
+
+  // Validation
+  if (!email || !password) {
+    console.log('Login failed: missing email or password');
+    return res.status(400).json({
+      success: false,
+      message: 'يرجى إدخال البريد الإلكتروني وكلمة المرور'
+    });
   }
-};
 
-export const forgotPassword = async (req, res) => {
+  // Check for user
+  const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
+  if (!user) {
+    console.log(`Login failed: user not found for email ${email}`);
+    return res.status(401).json({
+      success: false,
+      message: 'بيانات الدخول غير صحيحة'
+    });
+  }
+
+  console.log('User found:', user.email, '| isActive:', user.isActive, '| password hash:', user.password);
+
+  // Check if user is active
+  if (!user.isActive) {
+    console.log(`Login failed: user ${email} is not active`);
+    return res.status(401).json({
+      success: false,
+      message: 'الحساب معطل، يرجى التواصل مع الإدارة'
+    });
+  }
+
+  // Check password
+  const isMatch = await user.comparePassword(password);
+  console.log('Password match:', isMatch);
+
+  if (!isMatch) {
+    console.log(`Login failed: wrong password for user ${email}`);
+    return res.status(401).json({
+      success: false,
+      message: 'بيانات الدخول غير صحيحة'
+    });
+  }
+
+  // Update last login
+  user.lastLogin = new Date();
+  await user.save();
+
+  // Generate token
+  const token = generateToken(user._id);
+
+  res.status(200).json({
+    success: true,
+    message: 'تم تسجيل الدخول بنجاح',
+    data: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      avatar: user.avatar,
+      lastLogin: user.lastLogin,
+      token
+    }
+  });
+});
+
+// @desc    Logout user
+// @route   POST /api/auth/logout
+// @access  Private
+export const logout = asyncHandler(async (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'تم تسجيل الخروج بنجاح'
+  });
+});
+
+// @desc    Get current user
+// @route   GET /api/auth/me
+// @access  Private
+export const getMe = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  res.status(200).json({
+    success: true,
+    data: user.getPublicProfile()
+  });
+});
+
+// @desc    Update user profile
+// @route   PUT /api/auth/profile
+// @access  Private
+export const updateProfile = asyncHandler(async (req, res) => {
+  const { name, email, phone, department, position, avatar } = req.body;
+
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: 'المستخدم غير موجود'
+    });
+  }
+
+  // Update fields
+  if (name) user.name = name;
+  if (email) user.email = email;
+  if (phone) user.phone = phone;
+  if (department) user.department = department;
+  if (position) user.position = position;
+  if (avatar) user.avatar = avatar;
+
+  const updatedUser = await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: 'تم تحديث الملف الشخصي بنجاح',
+    data: updatedUser.getPublicProfile()
+  });
+});
+
+// @desc    Change password
+// @route   PUT /api/auth/change-password
+// @access  Private
+export const changePassword = asyncHandler(async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({
+      success: false,
+      message: 'يرجى إدخال كلمة المرور الحالية والجديدة'
+    });
+  }
+
+  if (newPassword.length < 6) {
+    return res.status(400).json({
+      success: false,
+      message: 'كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل'
+    });
+  }
+
+  const user = await User.findById(req.user._id).select('+password');
+
+  // Check current password
+  const isMatch = await user.comparePassword(currentPassword);
+  if (!isMatch) {
+    return res.status(400).json({
+      success: false,
+      message: 'كلمة المرور الحالية غير صحيحة'
+    });
+  }
+
+  // Update password
+  user.password = newPassword;
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: 'تم تغيير كلمة المرور بنجاح'
+  });
+});
+
+// @desc    Forgot password
+// @route   POST /api/auth/forgot-password
+// @access  Public
+export const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: "User not found" });
-    }
-
-    const resetToken = generateResetToken();
-    user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour expiry
-
-    await user.save();
-
-    await sendResetEmail(email, resetToken);
-
-    res.status(200).json({ message: "Password reset email sent" });
-  } catch (error) {
-    console.error("Error in forgotPassword:", error.message);
-    res.status(500).json({ message: "Internal server error" });
+  if (!email) {
+    return res.status(400).json({
+      success: false,
+      message: 'يرجى إدخال البريد الإلكتروني'
+    });
   }
-};
 
-export const resetPassword = async (req, res) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: 'البريد الإلكتروني غير مسجل'
+    });
+  }
+
+  // Generate reset token
+  const resetToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  user.resetPasswordToken = resetToken;
+  user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+  await user.save();
+
+  // TODO: Send email with reset token
+  // For now, just return the token (in production, send via email)
+  res.status(200).json({
+    success: true,
+    message: 'تم إرسال رابط إعادة تعيين كلمة المرور',
+    data: {
+      resetToken: resetToken // Remove this in production
+    }
+  });
+});
+
+// @desc    Reset password
+// @route   POST /api/auth/reset-password
+// @access  Public
+export const resetPassword = asyncHandler(async (req, res) => {
   const { token, newPassword } = req.body;
 
-  try {
-    const user = await User.findOne({
-      resetPasswordToken: token,
-      resetPasswordExpires: { $gt: Date.now() },
+  if (!token || !newPassword) {
+    return res.status(400).json({
+      success: false,
+      message: 'يرجى إدخال رمز التأكيد وكلمة المرور الجديدة'
     });
-
-    if (!user) {
-      return res.status(400).json({ message: "Invalid or expired token" });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
-    user.resetPasswordToken = null;
-    user.resetPasswordExpires = null;
-
-    await user.save();
-
-    res.status(200).json({ message: "Password reset successful" });
-  } catch (error) {
-    console.error("Error in resetPassword:", error.message);
-    res.status(500).json({ message: "Internal server error" });
   }
-};
-export const changePassword = async (req, res) => {
-  try {
-    const { currentPassword, newPassword } = req.body;
-    const userId = req.user._id;
 
-    if (!currentPassword || !newPassword) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-
-    if (newPassword.length < 6) {
-      return res.status(400).json({
-        message: "New password must be at least 6 characters",
-      });
-    }
-
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const isPasswordCorrect = await bcrypt.compare(
-      currentPassword,
-      user.password
-    );
-    if (!isPasswordCorrect) {
-      return res.status(400).json({ message: "Current password is incorrect" });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedNewPassword = await bcrypt.hash(newPassword, salt);
-
-    await User.findByIdAndUpdate(
-      userId,
-      { password: hashedNewPassword },
-      { new: true }
-    );
-
-    res.status(200).json({ message: "Password changed successfully" });
-  } catch (error) {
-    console.error("Error in changePassword:", error);
-    res.status(500).json({ message: "Internal server error" });
+  if (newPassword.length < 6) {
+    return res.status(400).json({
+      success: false,
+      message: 'كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل'
+    });
   }
-};
+
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() }
+  });
+
+  if (!user) {
+    return res.status(400).json({
+      success: false,
+      message: 'رمز التأكيد غير صحيح أو منتهي الصلاحية'
+    });
+  }
+
+  // Update password
+  user.password = newPassword;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: 'تم إعادة تعيين كلمة المرور بنجاح'
+  });
+});
+
+// @desc    Refresh token
+// @route   POST /api/auth/refresh
+// @access  Private
+export const refreshToken = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: 'المستخدم غير موجود'
+    });
+  }
+
+  // Generate new token
+  const token = generateToken(user._id);
+
+  res.status(200).json({
+    success: true,
+    message: 'تم تجديد الرمز المميز بنجاح',
+    data: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      avatar: user.avatar,
+      token
+    }
+  });
+});
+
+// Check authentication status
+export const checkAuth = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  res.status(200).json({
+    success: true,
+    message: 'User is authenticated',
+    data: user ? user.getPublicProfile() : null
+  });
+});
+
+// @desc    Get current user profile
+// @route   GET /api/auth/profile
+// @access  Private
+export const getProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: 'المستخدم غير موجود'
+    });
+  }
+  res.status(200).json({
+    success: true,
+    data: user.getPublicProfile()
+  });
+});

@@ -10,6 +10,7 @@ import { Progress } from './ui/progress';
 import { CheckCircle, XCircle, AlertCircle, Calendar as CalendarIcon, Users, Clock, Download, Plus, Filter, Info, MoreHorizontal, BarChart3, PieChart, TrendingUp, TrendingDown, Search, Eye, Edit, Trash2, Bell, Settings, ChevronLeft, ChevronRight } from 'lucide-react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday } from 'date-fns';
 import { ar } from 'date-fns/locale';
+import { formatDate } from '@/lib/utils';
 
 const AttendancePage = () => {
   const [selectedClass, setSelectedClass] = useState<string>('');
@@ -243,10 +244,10 @@ const AttendancePage = () => {
                   </Button>
                   <div className="text-center">
                     <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">
-                      {format(date, 'MMMM yyyy', { locale: ar })}
+                      {formatDate(date, 'MMMM yyyy')}
                     </h3>
                     <p className="text-sm text-slate-600 dark:text-slate-400">
-                      {format(date, 'EEEE', { locale: ar })}
+                      {formatDate(date, 'EEEE')}
                     </p>
                   </div>
                   <Button 
@@ -292,7 +293,7 @@ const AttendancePage = () => {
                           `}
                         >
                           <div className="text-sm font-medium mb-1">
-                            {format(day, 'd')}
+                            {formatDate(day, 'd')}
                           </div>
                           
                           {/* Attendance Indicators */}
@@ -338,7 +339,7 @@ const AttendancePage = () => {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <h4 className="font-semibold text-slate-900 dark:text-white">
-                      إحصائيات {format(date, 'EEEE، d MMMM yyyy', { locale: ar })}
+                      إحصائيات {formatDate(date, "EEEE، d MMMM yyyy")}
                     </h4>
                     <Badge variant="outline" className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800">
                       {Math.round((presentToday / totalStudents) * 100)}% حضور
@@ -374,7 +375,7 @@ const AttendancePage = () => {
                   <div className="space-y-2">
                     <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">سجل الحضور والغياب</CardTitle>
                     <p className="text-slate-600 dark:text-slate-400">
-                      تفاصيل حضور الطلاب ليوم {format(date, 'EEEE، d MMMM yyyy', { locale: ar })}
+                      تفاصيل حضور الطلاب ليوم {formatDate(date, "EEEE، d MMMM yyyy")}
                     </p>
                   </div>
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">

@@ -275,7 +275,8 @@ const Dashboard = () => {
     <div className="space-y-6 animate-fade-in-up">
       {/* Enhanced Welcome Section */}
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 p-8 rounded-2xl text-white relative overflow-hidden animate-slide-in-bottom">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-blue-600/20 animate-pulse-slow"></div>
+        {/* Responsive padding for mobile */}
+        <div className="md:hidden absolute inset-0 bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-blue-600/30" />
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-6">
             <div className="space-y-3">
@@ -329,7 +330,7 @@ const Dashboard = () => {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 px-1">
         {quickStats.map((stat, index) => {
           const Icon = stat.icon;
           return (
@@ -369,14 +370,14 @@ const Dashboard = () => {
       </div>
 
       {/* Main Dashboard Content */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-3 md:gap-6 px-1">
         {/* Left Column - Activities and Events */}
-        <div className="xl:col-span-2 space-y-6">
+        <div className="xl:col-span-2 space-y-3 md:space-y-6">
           {/* Recent Activities and Upcoming Events */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-6">
             {/* Enhanced Recent Activities */}
             <Card className="card-hover animate-slide-in-bottom stagger-3">
-              <CardHeader>
+              <CardHeader className="px-2 py-2 md:px-6 md:py-4">
                 <CardTitle className="flex items-center justify-between">
                   <div className="flex items-center space-x-2 space-x-reverse">
                     <div className="p-2 rounded-lg bg-blue-500/10 animate-pulse-slow">
@@ -388,8 +389,8 @@ const Dashboard = () => {
                 </CardTitle>
                 <CardDescription>آخر التحديثات في النظام</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+              <CardContent className="px-2 py-2 md:px-6 md:py-4 overflow-x-auto">
+                <div className="flex flex-col space-y-2 md:space-y-4 min-w-[320px]">
                   {recentActivities.map((activity, index) => {
                     const Icon = activity.icon;
                     return (
@@ -428,7 +429,7 @@ const Dashboard = () => {
 
             {/* Enhanced Upcoming Events */}
             <Card className="card-hover animate-slide-in-bottom stagger-4">
-              <CardHeader>
+              <CardHeader className="px-2 py-2 md:px-6 md:py-4">
                 <CardTitle className="flex items-center justify-between">
                   <div className="flex items-center space-x-2 space-x-reverse">
                     <div className="p-2 rounded-lg bg-purple-500/10 animate-float">
@@ -440,8 +441,8 @@ const Dashboard = () => {
                 </CardTitle>
                 <CardDescription>الأحداث والفعاليات المهمة</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+              <CardContent className="px-2 py-2 md:px-6 md:py-4 overflow-x-auto">
+                <div className="flex flex-col space-y-2 md:space-y-4 min-w-[320px]">
                   {upcomingEvents.map((event, index) => {
                     const Icon = event.icon;
                     return (
@@ -495,7 +496,7 @@ const Dashboard = () => {
 
           {/* Academic Performance Chart */}
           <Card className="card-hover animate-slide-in-bottom stagger-11">
-            <CardHeader>
+            <CardHeader className="px-2 py-2 md:px-6 md:py-4">
               <CardTitle className="flex items-center space-x-2 space-x-reverse">
                 <div className="p-2 rounded-lg bg-indigo-500/10 animate-bounce-gentle">
                   <BarChart3 className="h-5 w-5 text-indigo-500" />
@@ -504,8 +505,8 @@ const Dashboard = () => {
               </CardTitle>
               <CardDescription>متوسط درجات الطلاب حسب المادة</CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
+            <CardContent className="px-2 py-2 md:px-6 md:py-4 overflow-x-auto">
+              <div className="flex flex-col space-y-2 md:space-y-4 min-w-[320px]">
                 {academicPerformance.map((subject, index) => (
                   <div key={subject.subject} className="space-y-2 animate-slide-in-left" style={{ animationDelay: `${index * 0.1}s` }}>
                     <div className="flex justify-between items-center">
@@ -533,7 +534,7 @@ const Dashboard = () => {
 
           {/* Financial Overview */}
           <Card className="card-hover animate-slide-in-bottom stagger-12">
-            <CardHeader>
+            <CardHeader className="px-2 py-2 md:px-6 md:py-4">
               <CardTitle className="flex items-center space-x-2 space-x-reverse">
                 <div className="p-2 rounded-lg bg-cyan-500/10 animate-pulse-slow">
                   <DollarSign className="h-5 w-5 text-cyan-500" />
@@ -542,8 +543,8 @@ const Dashboard = () => {
               </CardTitle>
               <CardDescription>الإيرادات والمصروفات الشهرية</CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
+            <CardContent className="px-2 py-2 md:px-6 md:py-4 overflow-x-auto">
+              <div className="flex flex-col space-y-2 md:space-y-4 min-w-[320px]">
                 {financialOverview.map((month, index) => (
                   <div key={month.month} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-all duration-300 animate-slide-in-right hover-lift" style={{ animationDelay: `${index * 0.1}s` }}>
                     <div className="flex items-center space-x-3 space-x-reverse">
@@ -567,10 +568,10 @@ const Dashboard = () => {
         </div>
 
         {/* Right Column - Sidebar */}
-        <div className="space-y-6">
+        <div className="space-y-6 order-2 xl:order-1">
           {/* Notifications Center */}
           <Card className="card-hover animate-slide-in-bottom stagger-7">
-            <CardHeader>
+            <CardHeader className="px-2 py-2 md:px-6 md:py-4">
               <CardTitle className="flex items-center justify-between">
                 <div className="flex items-center space-x-2 space-x-reverse">
                   <div className="p-2 rounded-lg bg-purple-500/10 animate-heart-beat">
@@ -581,8 +582,8 @@ const Dashboard = () => {
                 <Badge variant="outline" className="text-xs">2 جديد</Badge>
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
+            <CardContent className="px-2 py-2 md:px-6 md:py-4 overflow-x-auto">
+              <div className="flex flex-col space-y-2 md:space-y-3 min-w-[320px]">
                 {notifications.map((notification, index) => (
                   <div 
                     key={notification.id} 
@@ -617,7 +618,7 @@ const Dashboard = () => {
 
           {/* Weather Widget */}
           <Card className="card-hover animate-slide-in-bottom stagger-8">
-            <CardHeader>
+            <CardHeader className="px-2 py-2 md:px-6 md:py-4">
               <CardTitle className="flex items-center space-x-2 space-x-reverse">
                 <div className="p-2 rounded-lg bg-blue-500/10 animate-float">
                   <Sun className="h-5 w-5 text-blue-500" />
@@ -625,7 +626,7 @@ const Dashboard = () => {
                 <span>الطقس</span>
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-2 py-2 md:px-6 md:py-4">
               <div className="text-center space-y-4">
                 <div className="flex items-center justify-center space-x-2 space-x-reverse">
                   <Sun className="h-12 w-12 text-blue-500 animate-pulse-slow" />
@@ -663,7 +664,7 @@ const Dashboard = () => {
 
           {/* System Status */}
           <Card className="card-hover animate-slide-in-bottom stagger-9">
-            <CardHeader>
+            <CardHeader className="px-2 py-2 md:px-6 md:py-4">
               <CardTitle className="flex items-center space-x-2 space-x-reverse">
                 <div className="p-2 rounded-lg bg-indigo-500/10 animate-heart-beat">
                   <Shield className="h-5 w-5 text-indigo-500" />
@@ -671,7 +672,7 @@ const Dashboard = () => {
                 <span>حالة النظام</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="px-2 py-2 md:px-6 md:py-4">
               {systemMetrics.map((metric, index) => (
                 <div key={metric.name} className="space-y-2 animate-slide-in-left" style={{ animationDelay: `${index * 0.1}s` }}>
                   <div className="flex justify-between text-sm">
@@ -691,7 +692,7 @@ const Dashboard = () => {
 
           {/* Quick Actions */}
           <Card className="card-hover animate-slide-in-bottom stagger-10">
-            <CardHeader>
+            <CardHeader className="px-2 py-2 md:px-6 md:py-4">
               <CardTitle className="flex items-center space-x-2 space-x-reverse">
                 <div className="p-2 rounded-lg bg-purple-500/10 animate-pulse-slow">
                   <Zap className="h-5 w-5 text-purple-500" />
@@ -699,7 +700,7 @@ const Dashboard = () => {
                 <span>إجراءات سريعة</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="px-2 py-2 md:px-6 md:py-4 space-y-3">
               <Button className="w-full justify-start hover-glow" variant="outline">
                 <Users className="h-4 w-4 ml-2" />
                 إضافة طالب جديد
@@ -731,7 +732,7 @@ const Dashboard = () => {
 
       {/* Attendance Trends */}
       <Card className="card-hover animate-slide-in-bottom stagger-13">
-        <CardHeader>
+        <CardHeader className="px-2 py-2 md:px-6 md:py-4">
           <CardTitle className="flex items-center space-x-2 space-x-reverse">
             <div className="p-2 rounded-lg bg-blue-500/10 animate-bounce-gentle">
               <TrendingUp className="h-5 w-5 text-blue-500" />
@@ -740,34 +741,58 @@ const Dashboard = () => {
           </CardTitle>
           <CardDescription>معدل الحضور خلال الأسبوع</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-7 gap-4">
-            {attendanceTrends.map((day, index) => (
-              <div key={day.day} className="text-center space-y-2 animate-slide-in-bottom" style={{ animationDelay: `${index * 0.1}s` }}>
-                <p className="text-sm font-medium">{day.day}</p>
-                <div className="relative">
-                  <div className="w-16 h-16 rounded-full border-4 border-muted flex items-center justify-center">
-                    <span className="text-xs font-bold">{day.attendance}%</span>
+        <CardContent className="px-2 py-2 md:px-6 md:py-4">
+          {/* Mobile: horizontal scroll, Desktop: grid */}
+          <div>
+            <div className="flex sm:hidden overflow-x-auto gap-3 pb-2 -mx-2 px-2">
+              {attendanceTrends.map((day, index) => (
+                <div key={day.day} className="min-w-[110px] max-w-[120px] flex-shrink-0 text-center space-y-2 bg-muted/40 rounded-xl p-3 animate-slide-in-bottom shadow-sm" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <p className="text-sm font-medium">{day.day}</p>
+                  <div className="relative flex items-center justify-center">
+                    <div className="w-14 h-14 rounded-full border-4 border-muted flex items-center justify-center">
+                      <span className="text-xs font-bold">{day.attendance}%</span>
+                    </div>
+                    {day.attendance > 0 && (
+                      <div 
+                        className="absolute inset-0 rounded-full border-4 border-green-500 pointer-events-none"
+                        style={{ 
+                          clipPath: `polygon(50% 50%, 50% 0%, ${50 + (day.attendance * 0.36)}% 0%, ${50 + (day.attendance * 0.36)}% 50%)` 
+                        }}
+                      ></div>
+                    )}
                   </div>
-                  {day.attendance > 0 && (
-                    <div 
-                      className="absolute inset-0 rounded-full border-4 border-green-500"
-                      style={{ 
-                        clipPath: `polygon(50% 50%, 50% 0%, ${50 + (day.attendance * 0.36)}% 0%, ${50 + (day.attendance * 0.36)}% 50%)` 
-                      }}
-                    ></div>
-                  )}
+                  <p className="text-xs text-muted-foreground">غائب: {day.absent}</p>
                 </div>
-                <p className="text-xs text-muted-foreground">غائب: {day.absent}</p>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="hidden sm:grid grid-cols-7 gap-4">
+              {attendanceTrends.map((day, index) => (
+                <div key={day.day} className="text-center space-y-2 animate-slide-in-bottom" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <p className="text-sm font-medium">{day.day}</p>
+                  <div className="relative">
+                    <div className="w-16 h-16 rounded-full border-4 border-muted flex items-center justify-center">
+                      <span className="text-xs font-bold">{day.attendance}%</span>
+                    </div>
+                    {day.attendance > 0 && (
+                      <div 
+                        className="absolute inset-0 rounded-full border-4 border-green-500"
+                        style={{ 
+                          clipPath: `polygon(50% 50%, 50% 0%, ${50 + (day.attendance * 0.36)}% 0%, ${50 + (day.attendance * 0.36)}% 50%)` 
+                        }}
+                      ></div>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground">غائب: {day.absent}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Comprehensive Analytics Dashboard */}
       <Card className="card-hover animate-slide-in-bottom stagger-14">
-        <CardHeader>
+        <CardHeader className="px-2 py-2 md:px-6 md:py-4">
           <CardTitle className="flex items-center space-x-2 space-x-reverse">
             <div className="p-2 rounded-lg bg-purple-500/10 animate-pulse-slow">
               <PieChart className="h-5 w-5 text-purple-500" />
@@ -776,37 +801,37 @@ const Dashboard = () => {
           </CardTitle>
           <CardDescription>تحليلات مفصلة وإحصائيات متقدمة</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-2 py-2 md:px-6 md:py-4">
           <Tabs defaultValue="overview" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="overview" className="hover-glow">نظرة عامة</TabsTrigger>
-              <TabsTrigger value="academic" className="hover-glow">أكاديمي</TabsTrigger>
-              <TabsTrigger value="financial" className="hover-glow">مالي</TabsTrigger>
               <TabsTrigger value="attendance" className="hover-glow">الحضور</TabsTrigger>
+              <TabsTrigger value="financial" className="hover-glow">مالي</TabsTrigger>
+              <TabsTrigger value="academic" className="hover-glow">أكاديمي</TabsTrigger>
+              <TabsTrigger value="overview" className="hover-glow">نظرة عامة</TabsTrigger>
             </TabsList>
             
             <TabsContent value="overview" className="space-y-4 mt-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="p-4 rounded-lg bg-gradient-to-br from-red-500/10 to-red-500/5 border border-red-500/20">
-                  <div className="flex items-center space-x-2 space-x-reverse mb-2">
+                  <div className="flex items-center justify-end space-x-2 space-x-reverse mb-2">
+                    <span className="font-medium mr-4">إجمالي الطلاب</span>
                     <Users className="h-5 w-5 text-red-500" />
-                    <span className="font-medium">إجمالي الطلاب</span>
                   </div>
                   <p className="text-2xl font-bold text-red-500">1,247</p>
                   <p className="text-xs text-muted-foreground">+12% من الشهر الماضي</p>
                 </div>
                 <div className="p-4 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20">
-                  <div className="flex items-center space-x-2 space-x-reverse mb-2">
+                  <div className="flex items-center justify-end space-x-2 space-x-reverse mb-2">
+                    <span className="font-medium mr-4">المعلمين</span>
                     <GraduationCap className="h-5 w-5 text-blue-500" />
-                    <span className="font-medium">المعلمين</span>
                   </div>
                   <p className="text-2xl font-bold text-blue-500">45</p>
                   <p className="text-xs text-muted-foreground">+3 من الشهر الماضي</p>
                 </div>
                 <div className="p-4 rounded-lg bg-gradient-to-br from-green-500/10 to-green-500/5 border border-green-500/20">
-                  <div className="flex items-center space-x-2 space-x-reverse mb-2">
+                  <div className="flex items-center justify-end space-x-2 space-x-reverse mb-2">
+                    <span className="font-medium mr-4">المواد الدراسية</span>
                     <BookOpen className="h-5 w-5 text-green-500" />
-                    <span className="font-medium">المواد الدراسية</span>
                   </div>
                   <p className="text-2xl font-bold text-green-500">32</p>
                   <p className="text-xs text-muted-foreground">+2 من الشهر الماضي</p>
@@ -850,14 +875,26 @@ const Dashboard = () => {
             <TabsContent value="attendance" className="space-y-4 mt-6">
               <div className="space-y-4">
                 <h4 className="font-medium">معدل الحضور الأسبوعي</h4>
-                <div className="grid grid-cols-7 gap-2">
-                  {attendanceTrends.map((day, index) => (
-                    <div key={day.day} className="text-center p-2 rounded-lg bg-muted/30">
-                      <p className="text-xs font-medium">{day.day}</p>
-                      <p className="text-lg font-bold text-green-500">{day.attendance}%</p>
-                      <p className="text-xs text-muted-foreground">{day.absent} غائب</p>
-                    </div>
-                  ))}
+                {/* Mobile: horizontal scroll, Desktop: grid */}
+                <div>
+                  <div className="flex sm:hidden overflow-x-auto gap-2 pb-2 -mx-2 px-2">
+                    {attendanceTrends.map((day, index) => (
+                      <div key={day.day} className="min-w-[90px] max-w-[100px] flex-shrink-0 text-center p-2 rounded-lg bg-muted/30 animate-slide-in-bottom shadow-sm" style={{ animationDelay: `${index * 0.1}s` }}>
+                        <p className="text-xs font-medium">{day.day}</p>
+                        <p className="text-lg font-bold text-green-500">{day.attendance}%</p>
+                        <p className="text-xs text-muted-foreground">{day.absent} غائب</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="hidden sm:grid grid-cols-7 gap-2">
+                    {attendanceTrends.map((day, index) => (
+                      <div key={day.day} className="text-center p-2 rounded-lg bg-muted/30 animate-slide-in-bottom" style={{ animationDelay: `${index * 0.1}s` }}>
+                        <p className="text-xs font-medium">{day.day}</p>
+                        <p className="text-lg font-bold text-green-500">{day.attendance}%</p>
+                        <p className="text-xs text-muted-foreground">{day.absent} غائب</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </TabsContent>
@@ -871,7 +908,7 @@ const Dashboard = () => {
         
         {/* Performance Trends Chart */}
         <Card className="card-hover animate-slide-in-bottom stagger-15">
-          <CardHeader>
+          <CardHeader className="px-2 py-2 md:px-6 md:py-4">
             <CardTitle className="flex items-center space-x-2 space-x-reverse">
               <div className="p-2 rounded-lg bg-green-500/10 animate-bounce-gentle">
                 <TrendingUp className="h-5 w-5 text-green-500" />
@@ -880,7 +917,7 @@ const Dashboard = () => {
             </CardTitle>
             <CardDescription>تطور متوسط الدرجات خلال الأسابيع الستة الماضية</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-2 py-2 md:px-6 md:py-4">
             <UiLineChart
               data={performanceTrendData}
               index="week"
@@ -894,7 +931,7 @@ const Dashboard = () => {
 
         {/* Financial Overview Chart */}
         <Card className="card-hover animate-slide-in-bottom stagger-16">
-          <CardHeader>
+          <CardHeader className="px-2 py-2 md:px-6 md:py-4">
             <CardTitle className="flex items-center space-x-2 space-x-reverse">
               <div className="p-2 rounded-lg bg-orange-500/10 animate-pulse-slow">
                 <DollarSign className="h-5 w-5 text-orange-500" />
@@ -903,7 +940,7 @@ const Dashboard = () => {
             </CardTitle>
             <CardDescription>الإيرادات والمصروفات خلال الأشهر الستة الماضية</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-2 py-2 md:px-6 md:py-4">
             <UiAreaChart
               data={financialChartData}
               index="month"
@@ -917,7 +954,7 @@ const Dashboard = () => {
 
         {/* Academic Performance Bar Chart */}
         <Card className="card-hover animate-slide-in-bottom stagger-17">
-          <CardHeader>
+          <CardHeader className="px-2 py-2 md:px-6 md:py-4">
             <CardTitle className="flex items-center space-x-2 space-x-reverse">
               <div className="p-2 rounded-lg bg-blue-500/10 animate-float">
                 <BarChart3 className="h-5 w-5 text-blue-500" />
@@ -926,7 +963,7 @@ const Dashboard = () => {
             </CardTitle>
             <CardDescription>متوسط الدرجات وعدد الطلاب لكل مادة دراسية</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-2 py-2 md:px-6 md:py-4">
             <UiBarChart
               data={academicChartData}
               index="subject"
@@ -940,7 +977,7 @@ const Dashboard = () => {
 
         {/* Student Distribution Pie Chart */}
         <Card className="card-hover animate-slide-in-bottom stagger-18">
-          <CardHeader>
+          <CardHeader className="px-2 py-2 md:px-6 md:py-4">
             <CardTitle className="flex items-center space-x-2 space-x-reverse">
               <div className="p-2 rounded-lg bg-purple-500/10 animate-heart-beat">
                 <PieChart className="h-5 w-5 text-purple-500" />
@@ -949,7 +986,7 @@ const Dashboard = () => {
             </CardTitle>
             <CardDescription>عدد الطلاب في كل صف دراسي</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-2 py-2 md:px-6 md:py-4">
             <div className="flex items-center justify-center">
               <UiPieChart
                 data={studentDistributionData}
@@ -979,7 +1016,7 @@ const Dashboard = () => {
 
         {/* Attendance Trends Area Chart */}
         <Card className="card-hover animate-slide-in-bottom stagger-19">
-          <CardHeader>
+          <CardHeader className="px-2 py-2 md:px-6 md:py-4">
             <CardTitle className="flex items-center space-x-2 space-x-reverse">
               <div className="p-2 rounded-lg bg-green-500/10 animate-bounce-gentle">
                 <Users className="h-5 w-5 text-green-500" />
@@ -988,7 +1025,7 @@ const Dashboard = () => {
               </CardTitle>
             <CardDescription>معدل الحضور والغياب خلال الأشهر الستة الماضية</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-2 py-2 md:px-6 md:py-4">
             <UiAreaChart
               data={attendanceChartData}
               index="month"

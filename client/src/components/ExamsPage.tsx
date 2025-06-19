@@ -52,6 +52,8 @@ import {
   Copy,
   ExternalLink
 } from 'lucide-react';
+import Loader from '@/components/ui/loader';
+import { formatDate } from '@/lib/utils';
 
 const ExamsPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -328,7 +330,7 @@ const ExamsPage = () => {
                       <p className="text-xs text-slate-600 dark:text-slate-400">{exam.class}</p>
                       <div className="flex items-center space-x-2 space-x-reverse mt-1">
                         <Clock className="h-3 w-3 text-slate-400" />
-                        <span className="text-xs text-slate-500">{exam.date} - {exam.time}</span>
+                        <span className="text-xs text-slate-500">{formatDate(exam.date)} - {exam.time}</span>
                       </div>
                     </div>
                     {getTypeBadge(exam.type)}
@@ -439,7 +441,7 @@ const ExamsPage = () => {
                         <TableCell>
                           <div className="flex items-center space-x-2 space-x-reverse">
                             <Calendar className="h-4 w-4 text-slate-400" />
-                            <span>{exam.date}</span>
+                            <span>{formatDate(exam.date)}</span>
                             <Clock className="h-4 w-4 text-slate-400" />
                             <span>{exam.time}</span>
                           </div>
@@ -511,7 +513,7 @@ const ExamsPage = () => {
                         <TableCell className="font-medium">{exam.subject}</TableCell>
                           <TableCell>{exam.class}</TableCell>
                         <TableCell>{exam.teacher}</TableCell>
-                          <TableCell>{exam.date}</TableCell>
+                          <TableCell>{formatDate(exam.date)}</TableCell>
                           <TableCell>
                           <Badge className={`${exam.averageScore >= 90 ? 'bg-green-100 text-green-800' : exam.averageScore >= 80 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
                             {exam.averageScore}%

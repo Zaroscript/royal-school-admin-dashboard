@@ -18,6 +18,7 @@ import {
   Target
 } from 'lucide-react';
 import { getChartColors, chartPalettes } from '@/lib/chartColors';
+import { formatDate } from '@/lib/utils';
 
 const ReportsPage = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('monthly');

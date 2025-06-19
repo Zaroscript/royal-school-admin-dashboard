@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
+import { useAuthStore } from '../store/useAuthStore';
 
 export type UserRole = 'admin' | 'moderator';
 
@@ -28,58 +29,27 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { user, login: loginStore, logout: logoutStore, loading: isLoading, fetchProfile } = useAuthStore();
 
   useEffect(() => {
-    // Check for saved user session
-    const savedUser = localStorage.getItem('school_user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    // Check for saved token and fetch profile
+    const token = localStorage.getItem('token');
+    if (token && !user) {
+      fetchProfile();
     }
-    setIsLoading(false);
-  }, []);
+  }, [fetchProfile, user]);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Mock authentication
-    const mockUsers = [
-      {
-        id: '1',
-        name: 'أحمد محمد',
-        email: 'admin@royal.edu',
-        role: 'admin' as UserRole,
-        avatar: '/api/placeholder/40/40'
-      },
-      {
-        id: '2',
-        name: 'فاطمة السيد',
-        email: 'coordinator@royal.edu',
-        role: 'moderator' as UserRole,
-        avatar: '/api/placeholder/40/40'
-      }
-    ];
-
-    const foundUser = mockUsers.find(u => u.email === email);
-    
-    if (foundUser && password === '123456') {
-      setUser(foundUser);
-      localStorage.setItem('school_user', JSON.stringify(foundUser));
-      setIsLoading(false);
+    try {
+      await loginStore(email, password);
       return true;
+    } catch (error) {
+      return false;
     }
-    
-    setIsLoading(false);
-    return false;
   };
 
   const logout = () => {
-    setUser(null);
-    localStorage.removeItem('school_user');
+    logoutStore();
   };
 
   return (
