@@ -33,7 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     // Check for saved token and fetch profile
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token && !user) {
       fetchProfile();
     }

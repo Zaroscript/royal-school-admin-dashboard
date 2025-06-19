@@ -23,7 +23,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus, Search, Edit, Trash2, Eye, GraduationCap, Filter, Download, AlertTriangle, Upload, Pencil, X } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, Eye, GraduationCap, Filter, Download as DownloadIcon, AlertTriangle, Upload, Pencil, X } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { useStudentStore } from '../store/useStudentStore';
 import Loader from '@/components/ui/loader';
@@ -447,6 +447,39 @@ const StudentsPage = () => {
     });
   };
 
+  // Export students to Excel
+  const handleExportExcel = async () => {
+    try {
+      // Optionally, fetch all students from the backend if pagination is used
+      // const { data } = await fetchStudents(1, 10000); // adjust limit as needed
+      // const allStudents = data.data;
+      // If all students are already loaded:
+      const allStudents = students;
+      if (!allStudents.length) {
+        toast({ title: 'لا يوجد بيانات طلاب للتصدير', variant: 'destructive' });
+        return;
+      }
+      const XLSX = await import('xlsx');
+      const exportData = allStudents.map(({ _id, ...student }) => student);
+      const worksheet = XLSX.utils.json_to_sheet(exportData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Students');
+      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'students.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      toast({ title: 'تم تصدير بيانات الطلاب بنجاح', variant: 'default' });
+    } catch (err) {
+      toast({ title: 'خطأ في تصدير البيانات', description: 'حدث خطأ أثناء تصدير بيانات الطلاب.', variant: 'destructive' });
+    }
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
@@ -463,7 +496,7 @@ const StudentsPage = () => {
             <Plus className="w-4 h-4 ml-2" />
             إضافة طالب جديد
           </Button>
-          <div>
+          <div className="flex gap-2">
             <Button
               type="button"
               variant="outline"
@@ -472,6 +505,15 @@ const StudentsPage = () => {
             >
               <Upload className="w-4 h-4" />
               استيراد من Excel
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className="flex items-center gap-2 hover:text-white"
+              onClick={handleExportExcel}
+            >
+              <DownloadIcon className="w-4 h-4" />
+              تصدير إلى Excel
             </Button>
             <input
               type="file"
@@ -1079,7 +1121,7 @@ const StudentsPage = () => {
                   onClick={handleConfirmImport}
                   disabled={importLoading || importSuccess}
                 >
-                  {importLoading && <Loader variant="royal" className="w-5 h-5 mr-2" />}
+                  {importLoading && <Loader variant="royal" />}
                   {importSuccess && <CheckCircle className="w-5 h-5 text-green-300 animate-pulse" />}
                   {!importLoading && !importSuccess && 'تأكيد الاستيراد'}
                   {importLoading && 'جاري الرفع...'}

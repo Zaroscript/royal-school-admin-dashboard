@@ -172,14 +172,14 @@ const CoursesPage = () => {
       </div>
 
       {/* Enhanced Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-end" style={{ direction: 'rtl' }}>
         {[
           { title: 'إجمالي المواد', value: courses.length, icon: BookOpen, color: 'blue', delay: 'stagger-1' },
           { title: 'المواد النشطة', value: courses.filter(c => c.status === 'active').length, icon: TrendingUp, color: 'green', delay: 'stagger-2' },
           { title: 'المواد المكتملة', value: courses.filter(c => c.status === 'completed').length, icon: CheckCircle2, color: 'purple', delay: 'stagger-3' },
           { title: 'معدل الإنجاز', value: `${Math.round((courses.filter(c => c.status === 'completed').length / courses.length) * 100)}%`, icon: Target, color: 'orange', delay: 'stagger-4' }
         ].map((stat, index) => (
-          <Card key={index} className={`card-hover animate-fade-in-up ${stat.delay}`}>
+          <Card key={index} className={`card-hover animate-fade-in-up ${stat.delay} text-right`}>
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <div className={`w-12 h-12 bg-gradient-to-r from-${stat.color}-100 to-${stat.color === 'blue' ? 'purple' : stat.color}-100 dark:from-${stat.color}-900/30 dark:to-${stat.color === 'blue' ? 'purple' : stat.color}-900/30 rounded-xl flex items-center justify-center`}>
@@ -336,14 +336,14 @@ const CoursesPage = () => {
                       <div className="text-center p-3 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg">
                         <div className="flex items-center justify-center gap-1 mb-1">
                           <Users className="w-4 h-4 text-blue-500" />
-                          <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{safe(course.studentsCount, 0)}</span>
+                          <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{safe(course.studentsCount?.toString(), '0')}</span>
                         </div>
                         <p className="text-xs text-gray-600 dark:text-gray-400">طالب</p>
                       </div>
                       <div className="text-center p-3 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg">
                         <div className="flex items-center justify-center gap-1 mb-1">
                           <Clock className="w-4 h-4 text-purple-500" />
-                          <span className="text-lg font-bold text-purple-600 dark:text-purple-400">{safe(course.totalHours, 0)}</span>
+                          <span className="text-lg font-bold text-purple-600 dark:text-purple-400">{safe(course.totalHours?.toString(), '0')}</span>
                         </div>
                         <p className="text-xs text-gray-600 dark:text-gray-400">ساعة</p>
                       </div>
@@ -354,13 +354,13 @@ const CoursesPage = () => {
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-sm font-medium text-gray-700 dark:text-gray-300">التقدم</span>
                         <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">
-                          {safe(Math.round((course.completedHours / (course.totalHours || 1)) * 100), 0)}%
+                          {safe(Math.round((course.completedHours / (course.totalHours || 1)) * 100).toString(), '0')}%
                         </span>
                       </div>
-                      <Progress value={safe((course.completedHours / (course.totalHours || 1)) * 100, 0)} className="h-2 bg-blue-100 dark:bg-blue-900/30" />
+                      <Progress value={Number(safe(Math.round((course.completedHours / (course.totalHours || 1)) * 100).toString(), '0'))} className="h-2 bg-blue-100 dark:bg-blue-900/30" />
                       <div className="flex justify-between text-xs text-gray-500 mt-1">
-                        <span>{safe(course.completedHours, 0)} ساعة مكتملة</span>
-                        <span>{safe(course.totalHours - course.completedHours, 0)} ساعة متبقية</span>
+                        <span>{safe(course.completedHours?.toString(), '0')} ساعة مكتملة</span>
+                        <span>{safe((course.totalHours - course.completedHours)?.toString(), '0')} ساعة متبقية</span>
                       </div>
                     </div>
 
@@ -369,21 +369,23 @@ const CoursesPage = () => {
                       <div className="flex items-center justify-between text-sm">
                         <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                           <FileText className="w-4 h-4 text-blue-500" />
-                          <span>{safe(course.modules, 0)} وحدة</span>
+                          <span>{safe(course.modules?.toString(), '0')} وحدة</span>
                         </div>
                         <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                           <BookMarked className="w-4 h-4 text-purple-500" />
-                          <span>{safe(course.assignments, 0)} مهمة</span>
+                          <span>{safe(course.assignments?.toString(), '0')} مهمة</span>
                         </div>
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                           <Video className="w-4 h-4 text-green-500" />
-                          <span>{safe(course.materials, 0)} مادة</span>
+                          <span>{safe(course.materials?.toString(), '0')} مادة</span>
                         </div>
                         <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                           <Star className="w-4 h-4 text-yellow-500" />
-                          <span>{safe(course.rating, 0).toFixed(1)} ({safe(course.reviewsCount, 0)})</span>
+                          <span>
+                            {Number(safe(course.rating?.toString(), '0')).toFixed(1)} ({safe(course.reviewsCount?.toString(), '0')})
+                          </span>
                         </div>
                       </div>
                     </div>

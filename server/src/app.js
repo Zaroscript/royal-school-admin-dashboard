@@ -129,6 +129,10 @@ const startServer = async () => {
     console.log(`📊 Environment: ${process.env.NODE_ENV}`);
     console.log(`🔗 Health check: http://localhost:${PORT}/health`);
   });
+
+  app.get('/', (req, res) => {
+    res.send('✅ Server is running successfully!');
+  });
 };
 
 startServer();
